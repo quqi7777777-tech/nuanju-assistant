@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>暖居厨房 · V26 调料色彩语言版</title>
+<style>
+  :root{
+    --bg:#f5f1ec;
+    --panel:rgba(255,255,255,.74);
+    --panel-strong:rgba(255,255,255,.9);
+    --text:#3d3937;
+    --muted:#8f8783;
+    --line:rgba(120,105,96,.16);
+    --gold:#c5a36c;
+    --accent:#d6a6a7;
+    --shadow:0 16px 40px rgba(90,72,62,.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    color:var(--text);
+    font-family:"Noto Serif SC","PingFang SC","Microsoft YaHei",serif;
+    background:
+      radial-gradient(circle at 15% 10%,rgba(255,192,203,.20),transparent 26%),
+      radial-gradient(circle at 90% 16%,rgba(160,214,255,.18),transparent 24%),
+      radial-gradient(circle at 65% 90%,rgba(239,211,161,.20),transparent 28%),
+      linear-gradient(145deg,#f9f6f1,#eee9e4);
+    min-height:100vh;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(115deg,transparent 0 30%,rgba(255,255,255,.34) 34%,transparent 38%),
+      radial-gradient(circle at 50% 10%,rgba(255,255,255,.65),transparent 30%);
+    mix-blend-mode:screen;
+  }
+  button,input,select,textarea{font:inherit}
+  button{cursor:pointer}
+  .app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+  aside{
+    padding:28px 18px;
+    border-right:1px solid var(--line);
+    background:rgba(45,40,42,.84);
+    color:#fff;
+    backdrop-filter:blur(20px);
+  }
+  .brand{font-size:23px;letter-spacing:.12em;margin:0 0 8px}
+  .brand-sub{font:12px sans-serif;opacity:.58;letter-spacing:.18em;margin-bottom:28px}
+  .nav{display:flex;flex-direction:column;gap:8px}
+  .nav button{
+    border:0;
+    color:rgba(255,255,255,.82);
+    text-align:left;
+    padding:13px 16px;
+    border-radius:14px;
+    background:transparent;
+    transition:.2s;
+  }
+  .nav button:hover,.nav button.active{
+    color:white;
+    background:linear-gradient(100deg,rgba(221,177,150,.36),rgba(255,255,255,.08));
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+  }
+  main{padding:22px 28px 40px;overflow:auto}
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+    margin-bottom:20px;
+  }
+  .title h1{font-size:28px;margin:0}
+  .title p{color:var(--muted);margin:7px 0 0;font:13px sans-serif}
+  .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .pill,.btn{
+    border:1px solid rgba(159,139,128,.22);
+    background:rgba(255,255,255,.72);
+    border-radius:999px;
+    padding:10px 14px;
+    box-shadow:0 5px 20px rgba(88,67,58,.07);
+  }
+  .btn.primary{
+    background:linear-gradient(135deg,#e8c9b0,#f7e9d6);
+    border-color:rgba(191,145,96,.22);
+  }
+  .mode-switch{display:flex;background:rgba(255,255,255,.72);padding:4px;border-radius:999px}
+  .mode-switch button{border:0;background:transparent;padding:8px 12px;border-radius:999px;color:var(--muted)}
+  .mode-switch button.active{background:white;color:var(--text);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+  .page{display:none}
+  .page.active{display:block}
+  .grid{display:grid;gap:16px}
+  .grid.cards{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .card{
+    position:relative;
+    overflow:hidden;
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,.8);
+    border-radius:24px;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(20px);
+    padding:20px;
+  }
+  .card::after{
+    content:"";
+    position:absolute;inset:-1px;
+    border-radius:inherit;
+    pointer-events:none;
+    border:1px solid transparent;
+    background:linear-gradient(125deg,rgba(255,180,190,.42),rgba(180,220,255,.32),rgba(255,225,160,.36)) border-box;
+    -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+  }
+  .card h3{margin:0 0 8px;font-size:17px}
+  .muted{color:var(--muted);font:13px sans-serif}
+  .stamina-number{font-size:30px;margin:10px 0 4px}
+  .progress{height:8px;background:rgba(110,100,95,.12);border-radius:99px;overflow:hidden}
+  .progress > div{height:100%;background:linear-gradient(90deg,#f1c795,#dab8ce,#b9d9ef);border-radius:99px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .space{justify-content:space-between}
+  .section-head{display:flex;justify-content:space-between;align-items:end;margin:20px 0 12px}
+  .section-head h2{font-size:20px;margin:0}
+  .section-head p{margin:0;color:var(--muted);font:12px sans-serif}
+  .dish-grid,.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+  .dish,.item{
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(255,255,255,.9);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 24px rgba(70,55,50,.08);
+    transition:.2s;
+  }
+  .dish:hover,.item:hover{transform:translateY(-2px)}
+  .dish.selected{outline:2px solid #d6ad7e;box-shadow:0 0 0 5px rgba(236,197,151,.18)}
+  .thumb{
+    height:120px;background:linear-gradient(145deg,#f1ece7,#fff);
+    display:grid;place-items:center;overflow:hidden;
+  }
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .placeholder{font-size:38px;opacity:.35}
+  .meta{padding:12px}
+  .name{font-size:15px;margin-bottom:4px}
+  .stars{color:#e0ad5d;letter-spacing:1px;font-size:13px}
+  .tag{display:inline-block;border-radius:999px;padding:3px 8px;background:rgba(218,190,183,.28);font:11px sans-serif;color:#765f58;margin-top:7px}
+  .count{float:right;font:12px sans-serif;color:var(--muted)}
+  .hidden{display:none!important}
+  .edit-only{display:none}
+  body.edit-mode .edit-only{display:inline-flex}
+  body.edit-mode .editable{outline:1px dashed rgba(199,142,116,.45)}
+  body:not(.edit-mode) .developer-panel{display:none!important}
+  .preference-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px}
+  .preference-option{border:1px solid var(--line);background:rgba(255,255,255,.7);padding:8px 6px;border-radius:11px;font:12px sans-serif}
+  .preference-option.active{background:linear-gradient(135deg,#f4d5c4,#f7eadc);border-color:#d8ae83;box-shadow:0 4px 14px rgba(160,110,80,.12)}
+  .preference-row{padding:12px 0;border-bottom:1px solid var(--line)}
+  .preference-row:last-child{border-bottom:0}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+  label{display:flex;flex-direction:column;gap:6px;font:12px sans-serif;color:var(--muted)}
+  input,select,textarea{
+    width:100%;border:1px solid var(--line);border-radius:13px;
+    padding:10px 12px;background:rgba(255,255,255,.8);color:var(--text);
+  }
+  textarea{min-height:90px;resize:vertical}
+  .drawer{
+    margin-top:12px;border-top:1px solid var(--line);padding-top:12px;
+  }
+  .recipe-builder{display:grid;grid-template-columns:1fr 320px;gap:16px}
+  .selection-bar{
+    position:sticky;bottom:14px;margin-top:20px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:12px 16px;background:rgba(255,255,255,.9);border-radius:18px;
+    box-shadow:0 12px 35px rgba(70,55,50,.15);backdrop-filter:blur(18px);
+  }
+  .selected-list{display:flex;gap:8px;flex-wrap:wrap}
+
+  body:not(.developer-mode){padding-bottom:96px}
+  .floating-cook-tray{position:fixed;z-index:80;left:50%;transform:translateX(-50%);width:min(620px,calc(100vw - 32px));bottom:12px;background:rgba(255,255,255,.94);border:1px solid rgba(206,181,170,.55);border-radius:16px;box-shadow:0 12px 34px rgba(70,55,50,.16);backdrop-filter:blur(18px);overflow:hidden}
+  body.developer-mode .floating-cook-tray{display:none!important}
+  .floating-cook-tray details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;min-height:42px}
+  .floating-cook-tray details>summary::-webkit-details-marker{display:none}
+  .floating-cook-tray summary b{display:block;font-size:13px}.floating-cook-tray summary small{display:block;color:var(--muted);margin-top:1px;font-size:11px;max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .floating-cook-body{border-top:1px solid var(--line);padding:10px 12px 12px;max-height:42vh;overflow:auto}
+  .cook-selection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;max-height:260px;overflow:auto;padding:2px}
+  .cook-choice-card{position:relative;aspect-ratio:1/1;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.78);display:flex;flex-direction:column}
+  .cook-choice-card .thumb{height:auto;flex:1;min-height:0}.cook-choice-card .thumb img,.cook-choice-card .placeholder{height:100%}
+  .cook-choice-card .meta{padding:8px}.cook-choice-card .name{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0 0 5px}
+  .cook-choice-card .remove-choice{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:999px;border:0;background:rgba(255,255,255,.9);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .cook-choice-card select{padding:5px 7px;border-radius:9px;font-size:11px}
+  .floating-cook-controls{display:grid;grid-template-columns:minmax(220px,1fr) 110px auto;gap:8px;align-items:end;margin-top:10px}
+  .cook-mode.compact{display:flex;gap:7px;flex-wrap:wrap}.cook-mode.compact label{flex:1;min-width:82px}.cook-mode.compact span{padding:8px 10px}
+  .compact-field{gap:4px}.compact-field select{padding:8px}
+  @media(max-width:900px){body:not(.developer-mode){padding-bottom:62px}.floating-cook-tray{width:calc(100vw - 20px);bottom:8px}.floating-cook-controls{grid-template-columns:1fr 96px}.floating-cook-controls .btn{grid-column:1/-1}.cook-selection-grid{display:flex;overflow-x:auto;gap:8px;max-height:none;padding-bottom:4px}.cook-choice-card{flex:0 0 92px}.floating-cook-body{max-height:38vh}}
+  .mini{padding:6px 9px;background:#f2ece8;border-radius:999px;font:12px sans-serif}
+  .log-entry{padding:14px 0;border-bottom:1px solid var(--line)}
+  .log-entry:last-child{border-bottom:0}
+  .log-date{font:12px sans-serif;color:var(--muted);margin-bottom:5px}
+  .empty{padding:36px;text-align:center;color:var(--muted)}
+  @media(max-width:900px){
+    .app{grid-template-columns:1fr}
+    aside{position:sticky;top:0;z-index:20;padding:12px 14px}
+    .brand,.brand-sub{display:none}
+    .nav{flex-direction:row;overflow:auto}
+    .nav button{white-space:nowrap;padding:9px 12px}
+    main{padding:16px}
+    .recipe-builder{grid-template-columns:1fr}
+  }
+
+  .developer-nav{margin-top:4px}
+  .developer-page{display:none}
+  body.developer-mode .developer-page.active{display:block}
+  body.developer-mode .user-nav{display:none}
+  body:not(.developer-mode) .developer-nav{display:none}
+  body.developer-mode .developer-nav{display:flex}
+  body.developer-mode .user-nav{display:none}
+  body.developer-mode #developerEntryBtn{display:none}
+  body:not(.developer-mode) #leaveDeveloperBtn{display:none!important}
+  .modal{position:fixed;inset:0;z-index:100;background:rgba(35,30,30,.42);backdrop-filter:blur(8px);display:grid;place-items:center;padding:20px}
+  .modal-card{width:min(420px,100%);background:rgba(255,255,255,.95);border-radius:24px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.22)}
+  .template-action{display:flex;gap:8px;margin-top:8px}
+  .danger{color:#9d554f}
+  .developer-jump{width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);}
+  .developer-jump:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(75,55,45,.10)}
+  .developer-jump .btn{display:inline-flex;margin-top:10px;pointer-events:none}
+  .rule-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.48)}
+  .rule-row{display:grid;grid-template-columns:minmax(130px,1fr) 90px auto;gap:8px;align-items:end;margin-top:8px}
+  .rule-chip{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 11px;margin-top:7px;border-radius:12px;background:rgba(242,236,232,.8);font:12px sans-serif}
+  .wide-card{grid-column:1/-1}
+  .edit-banner{padding:9px 12px;margin-bottom:12px;border-radius:12px;background:rgba(230,201,176,.35);font:12px sans-serif}
+
+  .partner-picker{position:relative}
+  .partner-panel{position:absolute;right:0;top:calc(100% + 8px);z-index:60;width:260px;padding:14px;background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 45px rgba(60,45,40,.18)}
+  .partner-check{display:flex;align-items:center;gap:9px;padding:9px 4px;color:var(--text);font:14px sans-serif}
+  .partner-check input{width:auto}
+
+  .home-hero{position:relative}
+  .stamina-chip{position:absolute;right:20px;top:18px;width:190px;padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);z-index:3}
+  .stamina-chip .stamina-number{font-size:18px;margin:4px 0}
+  .recommendation-card{padding:26px;min-height:420px}
+  .home-seasoning-summary{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .home-seasoning-summary .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+  .meal-picker{margin:12px 0;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.42);overflow:hidden}
+  .meal-picker>summary{cursor:pointer;padding:14px 16px;font-weight:600;list-style:none}
+  .meal-picker>summary::-webkit-details-marker{display:none}
+  .meal-picker>summary::after{content:"＋";float:right}
+  .meal-picker[open]>summary::after{content:"－"}
+  .meal-checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:12px;padding:0 14px 14px}
+  .meal-check{position:relative;aspect-ratio:1/1;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.72);overflow:hidden;transition:.18s}
+  .meal-check:has(input:checked){border-color:#c99d76;box-shadow:0 0 0 2px rgba(201,157,118,.16)}
+  .meal-check label{display:flex;flex-direction:column;height:100%;margin:0;cursor:pointer}
+  .meal-check input[type=checkbox]{position:absolute;right:9px;top:9px;width:18px;height:18px;z-index:2}
+  .meal-check .meal-thumb{height:56%;background:#f1ece8;overflow:hidden}
+  .meal-check .meal-thumb img{width:100%;height:100%;object-fit:cover}
+  .meal-check .meal-thumb .placeholder{height:100%;display:grid;place-items:center;font-size:30px}
+  .meal-check .meal-meta{padding:8px 9px 4px;min-width:0}
+  .meal-check .meal-name{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .meal-check .meal-info{font:11px sans-serif;color:var(--muted);margin-top:3px;line-height:1.35}
+  .meal-check select{position:absolute;right:8px;bottom:8px;width:66px;padding:5px 7px;margin:0;font-size:11px}
+  .flavor-availability{margin-top:7px;font:12px sans-serif;color:var(--muted);line-height:1.5}
+  .seasoning-color-card{position:relative;overflow:hidden}
+  .seasoning-color-card::after{content:"";position:absolute;inset:-35% auto auto -15%;width:75%;height:75%;border-radius:50%;background:radial-gradient(circle,var(--seasoning-color) 0,transparent 68%);opacity:.09;pointer-events:none;filter:blur(10px)}
+  .seasoning-color-card:hover{border-color:color-mix(in srgb,var(--seasoning-color) 52%,white);box-shadow:0 16px 38px color-mix(in srgb,var(--seasoning-color) 16%,transparent),inset 0 1px 0 rgba(255,255,255,.92)}
+  .selected-recipe-row{display:grid;grid-template-columns:1fr minmax(150px,220px);gap:12px;align-items:end;padding:12px 0;border-bottom:1px solid var(--line)}
+  .selected-recipe-row:last-child{border-bottom:0}
+  .recommendation-card h2{font-size:28px;margin:0 0 6px}
+  .recommendation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+  .recommended-badge{position:absolute;top:10px;left:10px;z-index:2;background:rgba(255,255,255,.9);border-radius:999px;padding:5px 9px;font:11px sans-serif}
+  .choice-panel{margin-top:18px}
+  .choice-panel summary{cursor:pointer;font-weight:600;padding:8px 0}
+  .choice-card{margin-top:18px;border:1px solid rgba(214,173,126,.45)}
+  .choice-header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+  .cook-mode{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+  .cook-mode label{cursor:pointer;display:block}
+  .cook-mode input{display:none}
+  .cook-mode span{display:block;text-align:center;padding:11px 8px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.68);color:var(--text)}
+  .cook-mode input:checked+span{background:linear-gradient(135deg,#f3d2c0,#f6eadc);border-color:#d7aa79;box-shadow:0 5px 16px rgba(160,110,80,.13)}
+  .recipe-select-btn{width:100%;border:0;border-top:1px solid var(--line);background:rgba(255,255,255,.5);padding:10px;cursor:pointer}
+  .recipe-select-btn.active{background:#f2dfcf;font-weight:700}
+  @media(max-width:900px){.stamina-chip{position:static;width:auto;margin-bottom:14px}.recommendation-grid{grid-template-columns:1fr}.cook-mode{grid-template-columns:1fr}}
+
+  .cook-tray-summary-main{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  .cook-tray-title{flex:0 0 auto}.cook-tray-title b{font-size:13px}.cook-tray-title small{font-size:10px;color:var(--muted)}
+  .cook-mini-preview{display:flex;align-items:center;gap:7px;min-width:0;overflow:hidden;flex:1}
+  .cook-mini-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:6px;align-items:center;min-width:102px;max-width:145px}
+  .cook-mini-image{width:34px;height:34px;border-radius:10px;overflow:hidden;background:#f1ece8}.cook-mini-image img{width:100%;height:100%;object-fit:cover}.cook-mini-image .placeholder{height:100%;display:grid;place-items:center;font-size:16px}
+  .cook-mini-text{min-width:0;line-height:1.15}.cook-mini-name{font-size:11px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cook-mini-flavor{font-size:10px;color:var(--muted);margin-top:3px}
+  .cook-edit-btn{flex:0 0 auto;border:0;background:#f2ece8;border-radius:999px;padding:7px 10px;font:11px sans-serif;cursor:pointer;color:var(--text)}
+  .note-editor{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.55)}
+  .emoji-row{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.emoji-btn{width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font-size:17px}.emoji-btn.active{border-color:#c99d76;background:#f7e9dc}
+  @media(max-width:640px){.cook-mini-item{min-width:76px;max-width:92px;grid-template-columns:30px minmax(0,1fr)}.cook-mini-image{width:30px;height:30px}.cook-mini-preview{gap:4px}.cook-tray-title small{display:none}}
+
+
+  /* V18 · 轻透玻璃色散 */
+  :root{--bg:#f7f9ff;--panel:rgba(255,255,255,.42);--panel-strong:rgba(255,255,255,.62);--text:#494857;--muted:#8c8c9d;--line:rgba(255,255,255,.62);--shadow:0 18px 55px rgba(104,108,145,.10)}
+  body{background:radial-gradient(circle at 8% 8%,rgba(255,196,222,.32),transparent 28%),radial-gradient(circle at 92% 12%,rgba(188,220,255,.35),transparent 30%),radial-gradient(circle at 78% 85%,rgba(222,202,255,.28),transparent 28%),radial-gradient(circle at 20% 88%,rgba(255,226,190,.28),transparent 30%),linear-gradient(145deg,#fbfcff,#f4f7ff 48%,#fff9fc);background-attachment:fixed}
+  body::before{background:linear-gradient(120deg,transparent 5%,rgba(255,255,255,.52) 25%,transparent 45%),radial-gradient(circle at 50% 0,rgba(255,255,255,.72),transparent 38%);opacity:.78}
+  aside{background:linear-gradient(165deg,rgba(255,255,255,.36),rgba(234,239,255,.28));color:#5d5b70;border-right:1px solid rgba(255,255,255,.7);box-shadow:14px 0 44px rgba(113,120,160,.08);backdrop-filter:blur(30px) saturate(145%)}
+  .brand-sub{opacity:.48}.nav button{color:rgba(76,75,94,.72)}.nav button:hover,.nav button.active{color:#4d4c62;background:linear-gradient(100deg,rgba(255,205,226,.40),rgba(197,225,255,.35),rgba(225,207,255,.28));box-shadow:inset 0 0 0 1px rgba(255,255,255,.72),0 8px 24px rgba(108,114,150,.08)}
+  .card,.dish,.item,.floating-cook-tray,.pill,.btn,.mode-switch,input,select,textarea{backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)}
+  .card{background:linear-gradient(145deg,rgba(255,255,255,.52),rgba(255,255,255,.26));border:1px solid rgba(255,255,255,.78);box-shadow:0 20px 60px rgba(112,118,156,.10),inset 0 1px 0 rgba(255,255,255,.9)}
+  .card::after{background:linear-gradient(125deg,rgba(255,192,222,.52),rgba(183,221,255,.48),rgba(221,199,255,.44),rgba(255,226,187,.42)) border-box}
+  .dish,.item{background:linear-gradient(145deg,rgba(255,255,255,.54),rgba(255,255,255,.28));border-color:rgba(255,255,255,.72);box-shadow:0 12px 34px rgba(111,119,156,.08)}
+  input,select,textarea,.pill,.btn{background:rgba(255,255,255,.46);border-color:rgba(255,255,255,.76);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 6px 18px rgba(115,122,160,.06)}
+  .btn.primary{background:linear-gradient(135deg,rgba(255,207,225,.64),rgba(201,225,255,.60),rgba(230,211,255,.58));border-color:rgba(255,255,255,.85)}
+  .floating-cook-tray{background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(246,248,255,.42));border-color:rgba(255,255,255,.82);box-shadow:0 18px 50px rgba(98,105,145,.14),inset 0 1px 0 rgba(255,255,255,.92)}
+  .log-entry{margin-top:14px;padding:16px;border:1px solid rgba(255,255,255,.7);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.48),rgba(248,250,255,.26));box-shadow:0 12px 34px rgba(105,112,150,.07)}
+  .log-actions{display:flex;justify-content:flex-end;margin-top:10px}.log-note-btn{padding:7px 11px;font-size:12px}
+  .inline-note-editor{margin-top:12px;padding:14px;border-radius:18px;background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.72)}
+  .note-colors{display:flex;gap:8px;flex-wrap:wrap}.note-color{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.9);box-shadow:0 4px 12px rgba(80,80,110,.10)}.note-color.active{outline:2px solid rgba(92,91,116,.42);outline-offset:2px}
+  .note-color[data-color="purple"]{background:#dfd2ff}.note-color[data-color="blue"]{background:#cfe6ff}.note-color[data-color="pink"]{background:#ffd5e7}.note-color[data-color="red"]{background:#ffcfcf}.note-color[data-color="orange"]{background:#ffe0bd}
+  .attached-note{margin:10px 0 0 18px;padding:12px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.7);font:13px/1.65 sans-serif;box-shadow:0 8px 24px rgba(107,113,150,.06)}
+  .attached-note.purple{background:linear-gradient(145deg,rgba(223,210,255,.56),rgba(255,255,255,.30))}.attached-note.blue{background:linear-gradient(145deg,rgba(207,230,255,.58),rgba(255,255,255,.30))}.attached-note.pink{background:linear-gradient(145deg,rgba(255,213,231,.60),rgba(255,255,255,.30))}.attached-note.red{background:linear-gradient(145deg,rgba(255,207,207,.58),rgba(255,255,255,.30))}.attached-note.orange{background:linear-gradient(145deg,rgba(255,224,189,.60),rgba(255,255,255,.30))}
+  .attached-note img{width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:8px}.attached-note-time{font-size:10px;color:rgba(80,80,100,.55);margin-bottom:4px}
+
+  /* V19 · 深浅对比玻璃层次 */
+  :root{--bg:#dfe5f0;--panel:rgba(245,248,255,.36);--panel-strong:rgba(242,246,255,.54);--text:#343746;--muted:#73788a;--line:rgba(255,255,255,.42);--shadow:0 24px 70px rgba(48,55,80,.18)}
+  body{background:
+    radial-gradient(circle at 12% 8%,rgba(235,174,211,.25),transparent 27%),
+    radial-gradient(circle at 88% 12%,rgba(133,184,235,.27),transparent 28%),
+    radial-gradient(circle at 76% 84%,rgba(175,144,226,.20),transparent 28%),
+    radial-gradient(circle at 20% 88%,rgba(242,185,130,.18),transparent 30%),
+    linear-gradient(145deg,#cfd7e5 0%,#e9edf5 42%,#d7ddea 100%);background-attachment:fixed}
+  body::before{background:linear-gradient(118deg,rgba(36,40,58,.10),transparent 24%,rgba(255,255,255,.34) 44%,transparent 66%),radial-gradient(circle at 50% 0,rgba(255,255,255,.52),transparent 38%);opacity:.9}
+  aside{background:linear-gradient(165deg,rgba(43,47,65,.72),rgba(63,68,91,.52));color:rgba(255,255,255,.94);border-right:1px solid rgba(255,255,255,.18);box-shadow:18px 0 50px rgba(36,41,63,.18),inset -1px 0 0 rgba(255,255,255,.10);backdrop-filter:blur(34px) saturate(135%)}
+  .brand-sub{opacity:.56}.nav button{color:rgba(255,255,255,.72)}.nav button:hover,.nav button.active{color:#fff;background:linear-gradient(100deg,rgba(255,205,226,.22),rgba(181,218,255,.18),rgba(220,202,255,.18));box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 10px 28px rgba(19,23,38,.16)}
+  .card{background:linear-gradient(145deg,rgba(248,250,255,.42),rgba(224,229,241,.24));border:1px solid rgba(255,255,255,.48);box-shadow:0 24px 70px rgba(49,56,82,.16),inset 0 1px 0 rgba(255,255,255,.72),inset 0 -1px 0 rgba(80,88,118,.08)}
+  .card::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 35%,rgba(90,99,133,.04));border-radius:inherit}
+  .dish,.item{background:linear-gradient(145deg,rgba(247,249,255,.39),rgba(214,220,234,.22));border-color:rgba(255,255,255,.44);box-shadow:0 16px 42px rgba(53,60,86,.13),inset 0 1px 0 rgba(255,255,255,.62)}
+  input,select,textarea,.pill,.btn{background:linear-gradient(145deg,rgba(255,255,255,.42),rgba(218,224,238,.25));border-color:rgba(255,255,255,.46);box-shadow:inset 0 1px 0 rgba(255,255,255,.66),0 8px 22px rgba(49,56,82,.10);color:var(--text)}
+  .btn.primary{background:linear-gradient(135deg,rgba(233,185,209,.48),rgba(168,201,234,.46),rgba(203,183,235,.44));border-color:rgba(255,255,255,.58);box-shadow:0 10px 28px rgba(55,62,90,.13),inset 0 1px 0 rgba(255,255,255,.72)}
+  .floating-cook-tray{background:linear-gradient(145deg,rgba(238,242,251,.62),rgba(161,171,197,.26));border-color:rgba(255,255,255,.46);box-shadow:0 22px 60px rgba(42,48,72,.22),inset 0 1px 0 rgba(255,255,255,.70)}
+  .log-entry{background:linear-gradient(145deg,rgba(247,249,255,.38),rgba(208,215,231,.20));border-color:rgba(255,255,255,.42);box-shadow:0 16px 42px rgba(49,56,82,.12)}
+  .thumb{background:linear-gradient(145deg,rgba(255,255,255,.35),rgba(160,170,196,.16));box-shadow:inset 0 1px 0 rgba(255,255,255,.58)}
+
+
+/* V20 warm neutral glass refinement */
+:root{
+  --glass-bg:rgba(255,252,247,.46);
+  --glass-bg-strong:rgba(255,250,244,.68);
+  --glass-line:rgba(255,255,255,.72);
+  --glass-shadow:rgba(86,70,56,.14);
+  --glass-deep:rgba(58,52,47,.72);
+  --text:#3f3934;
+  --muted:#7d7268;
+  --line:rgba(112,94,78,.16);
+}
+body{
+  background:
+    radial-gradient(circle at 14% 12%,rgba(255,244,228,.68),transparent 28%),
+    radial-gradient(circle at 82% 18%,rgba(236,222,207,.42),transparent 30%),
+    radial-gradient(circle at 72% 78%,rgba(248,239,228,.50),transparent 30%),
+    linear-gradient(145deg,#eee7df 0%,#f6f1eb 46%,#e8dfd6 100%) !important;
+  color:var(--text);
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(120deg,rgba(255,255,255,.18),transparent 32%,rgba(255,248,239,.12) 66%,transparent);
+  backdrop-filter:blur(2px);
+}
+aside{
+  background:linear-gradient(180deg,rgba(56,49,44,.82),rgba(72,61,53,.68)) !important;
+  border-right:1px solid rgba(255,255,255,.18) !important;
+  box-shadow:inset -1px 0 rgba(255,255,255,.12),18px 0 48px rgba(75,60,48,.12) !important;
+}
+.card,.item,.modal-card,.partner-panel,.drawer,.floating-menu,.menu-island,.log-entry,.note-card{
+  background:linear-gradient(145deg,rgba(255,253,249,.58),rgba(244,236,228,.36)) !important;
+  border:1px solid rgba(255,255,255,.66) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.86),inset 0 -1px 0 rgba(109,89,72,.07),0 18px 44px rgba(88,70,55,.10) !important;
+  backdrop-filter:blur(22px) saturate(118%) !important;
+  -webkit-backdrop-filter:blur(22px) saturate(118%) !important;
+}
+input,select,textarea,.pill,.btn,.nav button{
+  background:linear-gradient(145deg,rgba(255,253,249,.52),rgba(239,230,222,.34)) !important;
+  border-color:rgba(255,255,255,.62) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72),0 8px 22px rgba(83,66,52,.07) !important;
+}
+.nav button{color:rgba(255,250,245,.74) !important;}
+.nav button.active{
+  background:linear-gradient(145deg,rgba(255,248,239,.24),rgba(255,255,255,.10)) !important;
+  color:#fffaf4 !important;
+  border-color:rgba(255,255,255,.26) !important;
+}
+.title h1,.section-head h2,h2,h3{color:#3d3732 !important;}
+.muted,.title p{color:#7e7369 !important;}
+.menu-island{
+  background:linear-gradient(145deg,rgba(66,57,50,.78),rgba(93,77,65,.62)) !important;
+  color:#fffaf4 !important;
+  border-color:rgba(255,255,255,.22) !important;
+}
+.menu-island .muted,.menu-island small{color:rgba(255,250,244,.70) !important;}
+.progress{background:rgba(111,92,76,.10) !important;}
+.progress>div{background:linear-gradient(90deg,#d5c0aa,#bda28a) !important;}
+
+
+
+  /* V21 · 白色液态玻璃视觉覆盖层 */
+  :root{
+    --bg:#fbfaf8;
+    --panel:rgba(255,255,255,.38);
+    --panel-strong:rgba(255,255,255,.58);
+    --text:#51504e;
+    --muted:#96918c;
+    --line:rgba(255,255,255,.64);
+    --gold:#c8a979;
+    --accent:#e4c5ba;
+    --shadow:0 18px 55px rgba(88,77,68,.09),0 3px 14px rgba(88,77,68,.045);
+  }
+  html{background:#fbfaf8}
+  body{
+    background:
+      radial-gradient(circle at 8% 8%,rgba(255,225,218,.26),transparent 26%),
+      radial-gradient(circle at 92% 14%,rgba(255,244,223,.30),transparent 28%),
+      radial-gradient(circle at 54% 92%,rgba(244,226,213,.23),transparent 30%),
+      linear-gradient(145deg,#fdfcfb 0%,#faf9f7 45%,#f7f5f2 100%);
+    color:var(--text);
+  }
+  body::before{
+    background:
+      radial-gradient(ellipse at 30% 0%,rgba(255,255,255,.88),transparent 38%),
+      linear-gradient(118deg,transparent 0 28%,rgba(255,255,255,.30) 34%,transparent 41%),
+      linear-gradient(180deg,rgba(255,255,255,.20),transparent 30%);
+    mix-blend-mode:screen;
+  }
+  body::after{
+    content:"";
+    position:fixed;inset:0;pointer-events:none;z-index:-1;
+    opacity:.28;
+    background-image:radial-gradient(rgba(90,80,72,.10) .45px,transparent .45px);
+    background-size:5px 5px;
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.28),transparent 70%);
+  }
+  aside{
+    color:#5b5854;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.56),rgba(255,255,255,.28)),
+      radial-gradient(circle at 12% 8%,rgba(255,255,255,.86),transparent 36%);
+    border-right:1px solid rgba(255,255,255,.86);
+    box-shadow:14px 0 42px rgba(104,91,80,.055),inset -1px 0 rgba(132,113,99,.07);
+    backdrop-filter:blur(34px) saturate(150%);
+    -webkit-backdrop-filter:blur(34px) saturate(150%);
+  }
+  .brand{color:#494744;text-shadow:0 1px rgba(255,255,255,.9)}
+  .brand-sub{color:#8e8983;opacity:.82}
+  .nav button{
+    color:#706b66;
+    background:rgba(255,255,255,.10);
+    border:1px solid transparent;
+  }
+  .nav button:hover,.nav button.active{
+    color:#474542;
+    background:linear-gradient(110deg,rgba(255,255,255,.68),rgba(255,255,255,.30));
+    border-color:rgba(255,255,255,.85);
+    box-shadow:inset 0 1px rgba(255,255,255,.95),0 8px 24px rgba(97,82,70,.07);
+  }
+  main{position:relative}
+  .topbar{
+    padding:10px 2px 4px;
+  }
+  .title h1{color:#494744;letter-spacing:.01em}
+  .title p{color:#9b9690}
+  .pill,.btn,.mode-switch{
+    color:#5a5753;
+    border:1px solid rgba(255,255,255,.78);
+    background:linear-gradient(145deg,rgba(255,255,255,.55),rgba(255,255,255,.28));
+    box-shadow:inset 0 1px rgba(255,255,255,.95),0 8px 24px rgba(100,85,73,.07);
+    backdrop-filter:blur(24px) saturate(145%);
+    -webkit-backdrop-filter:blur(24px) saturate(145%);
+    transition:transform .25s ease,background .25s ease,box-shadow .25s ease;
+  }
+  .pill:hover,.btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.66);box-shadow:inset 0 1px rgba(255,255,255,1),0 12px 28px rgba(100,85,73,.09)}
+  .btn.primary{
+    color:#594f49;
+    background:linear-gradient(135deg,rgba(255,244,235,.72),rgba(255,255,255,.44));
+    border-color:rgba(255,255,255,.86);
+  }
+  .mode-switch button.active{
+    background:rgba(255,255,255,.70);
+    color:#4f4c48;
+    box-shadow:inset 0 1px rgba(255,255,255,1),0 5px 18px rgba(89,76,66,.08);
+  }
+  .card{
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.46),rgba(255,255,255,.23)),
+      radial-gradient(circle at 12% 0%,rgba(255,255,255,.75),transparent 38%);
+    border:1px solid rgba(255,255,255,.76);
+    box-shadow:var(--shadow),inset 0 1px rgba(255,255,255,.95),inset 0 -1px rgba(112,92,78,.035);
+    backdrop-filter:blur(30px) saturate(155%);
+    -webkit-backdrop-filter:blur(30px) saturate(155%);
+    transition:transform .35s ease,box-shadow .35s ease,background .35s ease;
+  }
+  .card:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(145deg,rgba(255,255,255,.56),rgba(255,255,255,.28));
+    box-shadow:0 24px 65px rgba(88,77,68,.11),inset 0 1px rgba(255,255,255,1);
+  }
+  .card::before{
+    content:"";position:absolute;left:8%;right:30%;top:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.98),transparent);
+    opacity:.9;pointer-events:none;
+  }
+  .card::after{
+    background:linear-gradient(125deg,rgba(255,255,255,.92),rgba(255,232,220,.34),rgba(255,248,224,.30),rgba(255,255,255,.75)) border-box;
+    opacity:.72;
+  }
+  .dish,.item,.cook-choice-card,.meal-choice-card{
+    background:linear-gradient(145deg,rgba(255,255,255,.50),rgba(255,255,255,.25));
+    border:1px solid rgba(255,255,255,.78);
+    box-shadow:inset 0 1px rgba(255,255,255,.95),0 12px 30px rgba(90,76,66,.07);
+    backdrop-filter:blur(22px) saturate(145%);
+    -webkit-backdrop-filter:blur(22px) saturate(145%);
+  }
+  .dish:hover,.item:hover{box-shadow:inset 0 1px rgba(255,255,255,1),0 18px 38px rgba(90,76,66,.095)}
+  .thumb{background:linear-gradient(145deg,rgba(249,247,244,.72),rgba(255,255,255,.46))}
+  input,select,textarea{
+    border:1px solid rgba(255,255,255,.74);
+    background:rgba(255,255,255,.42);
+    color:#55514d;
+    box-shadow:inset 0 1px 2px rgba(99,82,69,.035),0 1px rgba(255,255,255,.8);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+  input:focus,select:focus,textarea:focus{
+    outline:none;border-color:rgba(213,182,161,.44);
+    background:rgba(255,255,255,.60);
+    box-shadow:0 0 0 4px rgba(236,216,202,.22),inset 0 1px rgba(255,255,255,.95);
+  }
+  .tag,.mini{
+    color:#766f69;
+    background:rgba(255,255,255,.38);
+    border:1px solid rgba(255,255,255,.62);
+    box-shadow:inset 0 1px rgba(255,255,255,.8);
+  }
+  .preference-option{background:rgba(255,255,255,.32);border-color:rgba(255,255,255,.62)}
+  .preference-option.active{background:linear-gradient(135deg,rgba(255,238,228,.62),rgba(255,255,255,.44));border-color:rgba(255,255,255,.84)}
+  .progress{background:rgba(120,107,98,.08);box-shadow:inset 0 1px 3px rgba(90,74,64,.05)}
+  .progress>div{background:linear-gradient(90deg,rgba(239,205,181,.92),rgba(248,227,215,.92),rgba(231,211,193,.9))}
+  .selection-bar{
+    background:rgba(255,255,255,.42);
+    border:1px solid rgba(255,255,255,.82);
+    box-shadow:0 16px 46px rgba(88,77,68,.10),inset 0 1px rgba(255,255,255,.96);
+    backdrop-filter:blur(30px) saturate(150%);
+  }
+  .floating-cook-tray{
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.34)),
+      radial-gradient(circle at 15% 0%,rgba(255,255,255,.9),transparent 42%);
+    border:1px solid rgba(255,255,255,.86);
+    box-shadow:0 18px 58px rgba(82,70,60,.13),inset 0 1px rgba(255,255,255,1),inset 0 -1px rgba(102,83,70,.04);
+    backdrop-filter:blur(34px) saturate(160%);
+    -webkit-backdrop-filter:blur(34px) saturate(160%);
+  }
+  .floating-cook-body{border-top-color:rgba(132,112,98,.08)}
+  .modal{background:rgba(75,67,61,.18);backdrop-filter:blur(14px)}
+  .modal-card{
+    background:linear-gradient(145deg,rgba(255,255,255,.74),rgba(255,255,255,.46));
+    border:1px solid rgba(255,255,255,.86);
+    box-shadow:0 28px 90px rgba(69,58,51,.16),inset 0 1px rgba(255,255,255,1);
+    backdrop-filter:blur(36px) saturate(155%);
+  }
+  .log-entry{border-bottom-color:rgba(117,99,86,.08)}
+  .note-card,.log-note-card{
+    backdrop-filter:blur(20px) saturate(140%);
+    -webkit-backdrop-filter:blur(20px) saturate(140%);
+    border-color:rgba(255,255,255,.68)!important;
+    box-shadow:inset 0 1px rgba(255,255,255,.85),0 8px 22px rgba(91,75,64,.06);
+  }
+  @keyframes glassBreath{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-1.5px)}
+  }
+  @media (min-width:901px){
+    .page.active>.card:nth-of-type(3n+1){animation:glassBreath 9s ease-in-out infinite}
+    .page.active>.card:nth-of-type(3n+2){animation:glassBreath 11s ease-in-out -3s infinite}
+    .page.active>.card:nth-of-type(3n){animation:glassBreath 10s ease-in-out -6s infinite}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+
+
+
+/* V23 — neutral white prism glass */
+:root{
+  --bg:#fbfbfa;
+  --surface:rgba(255,255,255,.48);
+  --surface-strong:rgba(255,255,255,.68);
+  --text:#4f5053;
+  --muted:#8b8d92;
+  --line:rgba(255,255,255,.76);
+}
+html,body{background:#fbfbfa;color:var(--text)}
+body{
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,255,255,.98),transparent 32%),
+    radial-gradient(circle at 86% 13%,rgba(232,238,255,.13),transparent 30%),
+    radial-gradient(circle at 72% 84%,rgba(255,230,239,.11),transparent 32%),
+    radial-gradient(circle at 22% 78%,rgba(239,232,255,.10),transparent 28%),
+    linear-gradient(145deg,#fcfcfb 0%,#f7f8fa 54%,#fbfbfb 100%);
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.52) 44%,transparent 68%);
+  opacity:.55;
+}
+aside{
+  background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(248,249,251,.40))!important;
+  border-color:rgba(255,255,255,.84)!important;
+  box-shadow:10px 0 34px rgba(78,83,94,.07),inset -1px 0 rgba(255,255,255,.72)!important;
+}
+.brand,.title h1,h1,h2,h3{color:#4d4f54!important}
+.brand-sub,.muted,.title p{color:#92959b!important}
+.nav button{color:#71747a!important}
+.nav button.active{
+  color:#4e5157!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(244,246,250,.54))!important;
+  border-color:rgba(255,255,255,.92)!important;
+  box-shadow:0 8px 22px rgba(74,81,94,.08),inset 0 1px rgba(255,255,255,1)!important;
+}
+.card,.dish,.item,.modal-card,.partner-panel,.drawer,.log-entry,.meal-choice-card,.cook-choice-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(247,248,251,.30))!important;
+  border-color:rgba(255,255,255,.86)!important;
+  box-shadow:0 14px 34px rgba(76,82,94,.075),inset 0 1px rgba(255,255,255,.96),inset 0 -1px rgba(211,215,224,.10)!important;
+}
+.card::before,.dish::before,.item::before{
+  background:linear-gradient(112deg,rgba(255,255,255,.48),transparent 32%,rgba(225,232,255,.08) 58%,rgba(255,225,237,.07) 78%,transparent)!important;
+}
+.thumb{background:linear-gradient(145deg,rgba(247,248,250,.76),rgba(255,255,255,.9))!important}
+.pill,.btn,.mode-switch,input,select,textarea{
+  color:#5d6066!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(246,247,250,.38))!important;
+  border-color:rgba(255,255,255,.88)!important;
+  box-shadow:0 8px 22px rgba(78,84,96,.065),inset 0 1px rgba(255,255,255,.98)!important;
+}
+.btn.primary{
+  color:#55585f!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.80),rgba(239,243,250,.55),rgba(255,247,250,.48))!important;
+}
+input:focus,select:focus,textarea:focus{
+  box-shadow:0 0 0 4px rgba(214,220,232,.18),0 10px 26px rgba(75,81,93,.07),inset 0 1px rgba(255,255,255,1)!important;
+}
+.progress{background:rgba(99,104,114,.08)!important}
+.progress>div{background:linear-gradient(90deg,rgba(215,219,228,.92),rgba(235,225,239,.86),rgba(219,232,241,.90))!important}
+.tag{color:#74777d!important;background:rgba(255,255,255,.48)!important;border-color:rgba(255,255,255,.78)!important}
+.floating-cook-tray{
+  left:50%;bottom:12px;top:auto;transform:translateX(-50%);
+  background:linear-gradient(145deg,rgba(255,255,255,.73),rgba(244,246,250,.43))!important;
+  border-color:rgba(255,255,255,.92)!important;
+  box-shadow:0 18px 48px rgba(74,80,92,.13),inset 0 1px rgba(255,255,255,1),inset 0 -1px rgba(205,212,224,.12)!important;
+  touch-action:none;
+}
+.floating-cook-tray::before{
+  background:linear-gradient(115deg,rgba(255,255,255,.25),transparent 30%,rgba(214,226,255,.08) 58%,rgba(255,220,235,.07) 78%,transparent)!important;
+}
+.floating-cook-tray.is-positioned{transform:none;bottom:auto}
+.cook-drag-handle{
+  flex:0 0 auto;width:24px;height:24px;border-radius:999px;display:grid;place-items:center;cursor:grab;
+  color:#92959b;background:rgba(255,255,255,.46);border:1px solid rgba(255,255,255,.76);
+  box-shadow:inset 0 1px rgba(255,255,255,.95);user-select:none;font-size:13px;letter-spacing:-2px;padding-right:2px
+}
+.cook-drag-handle:active{cursor:grabbing}
+.floating-cook-tray.dragging{transition:none!important;animation:none!important;box-shadow:0 24px 60px rgba(74,80,92,.18),inset 0 1px rgba(255,255,255,1)!important}
+@media(max-width:900px){
+  aside{background:rgba(255,255,255,.68)!important}
+  .floating-cook-tray.is-positioned{max-width:calc(100vw - 16px)}
+}
+
+
+  /* V26 · 调料色彩语言 */
+  .flavor-chip{
+    --flavor-rgb:210,210,210;
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 9px;border-radius:999px;
+    font:600 11px/1.2 sans-serif;color:rgba(70,70,74,.9);
+    background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(var(--flavor-rgb),.18));
+    border:1px solid rgba(var(--flavor-rgb),.34);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 4px 12px rgba(var(--flavor-rgb),.10);
+    backdrop-filter:blur(12px) saturate(145%);
+    -webkit-backdrop-filter:blur(12px) saturate(145%);
+    white-space:nowrap;vertical-align:middle;
+  }
+  .flavor-chip::before{content:"";width:7px;height:7px;border-radius:50%;background:rgb(var(--flavor-rgb));box-shadow:0 0 10px rgba(var(--flavor-rgb),.5)}
+  .flavor-chip[data-flavor="原味"]{--flavor-rgb:222,222,226}
+  .flavor-chip[data-flavor="爆辣"]{--flavor-rgb:230,115,103}
+  .flavor-chip[data-flavor="果香"]{--flavor-rgb:231,168,93}
+  .flavor-chip[data-flavor="酸甜"]{--flavor-rgb:232,167,183}
+  .flavor-chip[data-flavor="清苦"]{--flavor-rgb:134,167,121}
+  .flavor-chip[data-flavor="鲜香"]{--flavor-rgb:155,118,94}
+  .flavor-chip.is-selected{background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(var(--flavor-rgb),.30));border-color:rgba(var(--flavor-rgb),.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 3px rgba(var(--flavor-rgb),.10),0 8px 18px rgba(var(--flavor-rgb),.16)}
+  .flavor-chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+  .cook-mini-flavor .flavor-chip{padding:2px 6px;font-size:9px;gap:4px}.cook-mini-flavor .flavor-chip::before{width:5px;height:5px}
+  .meal-info .flavor-chip,.log-entry .flavor-chip{margin-top:4px}
+
+</style>
+
+<style id="v22-aurora-glass-appearance">
+:root{
+  --bg:#f8f6f4;
+  --panel:rgba(255,255,255,.56);
+  --panel-strong:rgba(255,255,255,.76);
+  --text:#45403e;
+  --muted:#918986;
+  --line:rgba(255,255,255,.72);
+  --gold:#c9a66f;
+  --accent:#d7aaa9;
+  --shadow:0 18px 48px rgba(96,77,70,.09),0 2px 8px rgba(96,77,70,.04);
+  --glass-border:rgba(255,255,255,.82);
+  --glass-highlight:rgba(255,255,255,.95);
+}
+html{background:#f8f6f4}
+body{
+  background:
+    radial-gradient(circle at 11% 8%,rgba(255,179,195,.19),transparent 28%),
+    radial-gradient(circle at 88% 14%,rgba(170,215,255,.17),transparent 26%),
+    radial-gradient(circle at 72% 86%,rgba(255,219,164,.17),transparent 30%),
+    radial-gradient(circle at 35% 72%,rgba(202,184,255,.10),transparent 26%),
+    linear-gradient(145deg,#fbfaf9 0%,#f5f1ee 100%);
+  color:var(--text);
+}
+body::before{
+  background:
+    linear-gradient(116deg,transparent 0 31%,rgba(255,255,255,.38) 35%,transparent 40%),
+    radial-gradient(circle at 50% 0%,rgba(255,255,255,.72),transparent 34%);
+  opacity:.95;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(circle at 16% 18%,rgba(255,255,255,.65),transparent 18%),
+    radial-gradient(circle at 82% 36%,rgba(255,255,255,.42),transparent 22%);
+}
+aside{
+  color:var(--text);
+  background:linear-gradient(160deg,rgba(255,255,255,.58),rgba(255,255,255,.34));
+  border-right:1px solid rgba(255,255,255,.74);
+  box-shadow:18px 0 44px rgba(104,83,76,.06),inset -1px 0 rgba(255,255,255,.78);
+  backdrop-filter:blur(32px) saturate(165%);
+  -webkit-backdrop-filter:blur(32px) saturate(165%);
+}
+.brand{color:#4b4543}.brand-sub{color:#8d8582;opacity:.72}
+.nav button{
+  color:#6f6865;
+  background:rgba(255,255,255,.12);
+  border:1px solid transparent;
+}
+.nav button:hover,.nav button.active{
+  color:#433e3c;
+  background:linear-gradient(115deg,rgba(255,255,255,.72),rgba(255,255,255,.34));
+  border-color:rgba(255,255,255,.82);
+  box-shadow:0 10px 26px rgba(102,82,75,.07),inset 0 1px rgba(255,255,255,.96);
+}
+.card,.dish,.item,.log-entry,.meal-choice-card,.cook-tray-card,.seasoning-card,.note-card{
+  backdrop-filter:blur(30px) saturate(170%);
+  -webkit-backdrop-filter:blur(30px) saturate(170%);
+}
+.card{
+  background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.36));
+  border:1px solid var(--glass-border);
+  box-shadow:var(--shadow),inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 rgba(255,255,255,.28);
+}
+.card::before{
+  content:"";position:absolute;left:10%;right:18%;top:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.98),transparent);
+}
+.card::after{
+  opacity:.72;
+  background:linear-gradient(122deg,rgba(255,166,188,.34),rgba(183,217,255,.28),rgba(214,188,255,.20),rgba(255,222,166,.31)) border-box;
+}
+.dish,.item,.meal-choice-card,.cook-tray-card,.seasoning-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(255,255,255,.32));
+  border:1px solid rgba(255,255,255,.84);
+  box-shadow:0 13px 32px rgba(91,72,65,.08),inset 0 1px rgba(255,255,255,.95);
+}
+.dish:hover,.item:hover,.meal-choice-card:hover,.cook-tray-card:hover{
+  transform:translateY(-2px);
+  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.42));
+  box-shadow:0 18px 40px rgba(91,72,65,.11),inset 0 1px rgba(255,255,255,1);
+}
+.thumb{background:linear-gradient(145deg,rgba(248,243,240,.72),rgba(255,255,255,.86))}
+.pill,.btn,.mode-switch,input,select,textarea{
+  background:linear-gradient(145deg,rgba(255,255,255,.64),rgba(255,255,255,.38));
+  border:1px solid rgba(255,255,255,.84);
+  box-shadow:0 8px 22px rgba(92,72,65,.07),inset 0 1px rgba(255,255,255,.96);
+  backdrop-filter:blur(22px) saturate(165%);
+  -webkit-backdrop-filter:blur(22px) saturate(165%);
+}
+.btn:hover,.pill:hover{background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.48));transform:translateY(-1px)}
+.btn.primary{
+  color:#5c4c46;
+  background:linear-gradient(135deg,rgba(255,221,202,.62),rgba(255,255,255,.58),rgba(218,233,255,.45));
+  border-color:rgba(255,255,255,.88);
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:rgba(255,255,255,.98);
+  box-shadow:0 0 0 4px rgba(237,206,218,.16),0 10px 26px rgba(92,72,65,.08),inset 0 1px rgba(255,255,255,1);
+}
+.progress{background:rgba(115,100,94,.10);box-shadow:inset 0 1px 3px rgba(80,65,60,.08)}
+.progress>div{background:linear-gradient(90deg,rgba(245,191,153,.92),rgba(223,185,213,.88),rgba(180,216,240,.90))}
+.tag{background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.72);color:#776b67}
+.floating-cook-tray{
+  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(255,255,255,.42));
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 18px 48px rgba(84,66,61,.14),inset 0 1px rgba(255,255,255,1);
+  backdrop-filter:blur(34px) saturate(180%);
+  -webkit-backdrop-filter:blur(34px) saturate(180%);
+}
+.floating-cook-tray::before{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(115deg,rgba(255,179,198,.12),transparent 34%,rgba(172,216,255,.12) 64%,rgba(255,221,162,.10));
+}
+.modal{background:rgba(88,72,68,.20);backdrop-filter:blur(16px)}
+.modal-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.80),rgba(255,255,255,.56));
+  border:1px solid rgba(255,255,255,.92);
+  box-shadow:0 30px 80px rgba(86,66,61,.18),inset 0 1px rgba(255,255,255,1);
+  backdrop-filter:blur(38px) saturate(175%);
+}
+.log-entry{
+  background:linear-gradient(145deg,rgba(255,255,255,.46),rgba(255,255,255,.24));
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:10px;
+  box-shadow:0 8px 22px rgba(92,72,65,.05),inset 0 1px rgba(255,255,255,.82);
+}
+@media (prefers-reduced-motion:no-preference){
+  .card,.floating-cook-tray{animation:v22Breath 10s ease-in-out infinite}
+  .card:nth-of-type(2n){animation-delay:-3s}.card:nth-of-type(3n){animation-delay:-6s}
+  @keyframes v22Breath{0%,100%{transform:translateY(0)}50%{transform:translateY(-.7px)}}
+}
+@media(max-width:900px){
+  aside{background:rgba(255,255,255,.62);box-shadow:0 8px 30px rgba(100,80,73,.07)}
+}
+</style>
+
+
+<style id="v24-interaction-dispersion">
+/* V24: neutral white glass, chromatic dispersion only at interaction edges */
+:root{
+  --dispersion-ring:linear-gradient(115deg,
+    rgba(255,174,209,.72) 0%,
+    rgba(255,224,172,.54) 18%,
+    rgba(190,241,225,.54) 39%,
+    rgba(174,216,255,.66) 61%,
+    rgba(211,185,255,.66) 80%,
+    rgba(255,190,222,.66) 100%);
+  --dispersion-soft:0 0 0 1px rgba(255,255,255,.84),
+    0 0 14px rgba(255,186,218,.10),
+    7px 0 16px rgba(170,218,255,.09),
+    -7px 0 16px rgba(215,190,255,.08);
+}
+
+/* Keep the resting UI neutral. */
+body{
+  background-color:#f8f8f7!important;
+  background-image:
+    radial-gradient(circle at 12% 8%,rgba(255,255,255,.96),transparent 32%),
+    radial-gradient(circle at 86% 18%,rgba(246,246,248,.72),transparent 34%),
+    radial-gradient(circle at 55% 88%,rgba(255,255,255,.82),transparent 38%)!important;
+}
+.card,.dish,.item,.log-entry,.meal-choice-card,.cook-tray-card,.seasoning-card,.note-card,
+.pill,.btn,input,select,textarea,.floating-cook-tray{
+  position:relative;
+}
+
+/* Interactive controls: the color lives on a 1px optical rim, not in the fill. */
+.btn,.pill,.nav button,.preference-option,.recipe-select-btn,.emoji-btn,
+.dish,.item,.meal-choice-card,.cook-tray-card,.seasoning-card{
+  isolation:isolate;
+}
+.btn::before,.pill::before,.nav button::before,.preference-option::before,
+.recipe-select-btn::before,.emoji-btn::before,.dish::before,.item::before,
+.meal-choice-card::before,.cook-tray-card::before,.seasoning-card::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  padding:1px;
+  background:var(--dispersion-ring);
+  background-size:220% 220%;
+  opacity:0;
+  pointer-events:none;
+  z-index:-1;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  transition:opacity .22s ease,filter .22s ease;
+}
+.btn:hover::before,.pill:hover::before,.nav button:hover::before,
+.preference-option:hover::before,.recipe-select-btn:hover::before,.emoji-btn:hover::before,
+.dish:hover::before,.item:hover::before,.meal-choice-card:hover::before,
+.cook-tray-card:hover::before,.seasoning-card:hover::before,
+.nav button.active::before,.preference-option.active::before,.recipe-select-btn.active::before,
+.emoji-btn.active::before,.dish.selected::before,.meal-choice-card.selected::before{
+  opacity:.78;
+  filter:saturate(.9) blur(.05px);
+  animation:v24PrismFlow 3.6s ease-in-out infinite alternate;
+}
+.btn:active::before,.pill:active::before,.recipe-select-btn:active::before,
+.meal-choice-card:active::before,.cook-tray-card:active::before{
+  opacity:1;
+  filter:saturate(1.08);
+}
+
+/* Focus rings disperse around the rim while the field itself remains white. */
+input:focus,select:focus,textarea:focus{
+  outline:none!important;
+  border-color:rgba(255,255,255,.94)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    0 0 0 2px rgba(255,255,255,.88),
+    0 0 0 3px rgba(205,190,255,.25),
+    -6px 0 15px rgba(255,185,218,.12),
+    6px 0 15px rgba(170,220,255,.12)!important;
+}
+
+/* Cards receive a faint spectral glint only when engaged. */
+.card:hover,.log-entry:hover,.note-card:hover{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.96),
+    inset 0 0 0 1px rgba(255,255,255,.50),
+    -9px 0 24px rgba(255,194,220,.065),
+    9px 0 24px rgba(177,220,255,.065),
+    0 18px 42px rgba(78,82,96,.075)!important;
+}
+
+/* Floating menu: stronger prism edge while editing or dragging. */
+.floating-cook-tray::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  padding:1px;
+  background:var(--dispersion-ring);
+  background-size:240% 240%;
+  opacity:.18;
+  pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  transition:opacity .25s ease,filter .25s ease;
+}
+.floating-cook-tray:hover::after,
+.floating-cook-tray:has(details[open])::after,
+.floating-cook-tray.dragging::after{
+  opacity:.82;
+  filter:saturate(.95);
+  animation:v24PrismFlow 3s ease-in-out infinite alternate;
+}
+.floating-cook-tray.dragging{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    -12px 0 30px rgba(255,185,218,.11),
+    12px 0 30px rgba(170,218,255,.11),
+    0 24px 58px rgba(70,76,92,.14)!important;
+}
+.cook-drag-handle:hover{
+  color:#666477;
+  text-shadow:-1px 0 rgba(255,163,208,.55),1px 0 rgba(151,211,255,.65);
+}
+
+/* A tiny refracted highlight on checked square cards. */
+.meal-choice-card.selected,.dish.selected,.recipe-select-btn.active{
+  box-shadow:var(--dispersion-soft),0 12px 30px rgba(70,75,90,.08)!important;
+}
+
+@keyframes v24PrismFlow{
+  from{background-position:0% 50%}
+  to{background-position:100% 50%}
+}
+@media(prefers-reduced-motion:reduce){
+  .btn::before,.pill::before,.nav button::before,.preference-option::before,
+  .recipe-select-btn::before,.emoji-btn::before,.dish::before,.item::before,
+  .meal-choice-card::before,.cook-tray-card::before,.seasoning-card::before,
+  .floating-cook-tray::after{animation:none!important}
+}
+
+
+/* V27 · 调料参考色板 + 居中展开菜单 */
+.seasoning-reference-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px!important;
+  margin-top:8px;
+}
+.seasoning-reference-chip{
+  --flavor-rgb:220,220,224;
+  min-height:38px;
+  padding:7px 9px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  color:rgba(65,65,70,.86);
+  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(var(--flavor-rgb),.24));
+  border:1px solid rgba(var(--flavor-rgb),.38);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 6px 16px rgba(var(--flavor-rgb),.10);
+  backdrop-filter:blur(14px) saturate(150%);
+  -webkit-backdrop-filter:blur(14px) saturate(150%);
+}
+.seasoning-reference-chip::before{
+  content:"";width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+  background:rgb(var(--flavor-rgb));box-shadow:0 0 10px rgba(var(--flavor-rgb),.46);
+}
+.seasoning-reference-name{margin-right:auto;font-size:12px;font-weight:600}
+.seasoning-reference-chip b{font-size:12px;font-weight:700;color:rgba(55,55,60,.78)}
+.seasoning-reference-chip[data-flavor="爆辣"]{--flavor-rgb:230,115,103}
+.seasoning-reference-chip[data-flavor="果香"]{--flavor-rgb:231,168,93}
+.seasoning-reference-chip[data-flavor="酸甜"]{--flavor-rgb:232,167,183}
+.seasoning-reference-chip[data-flavor="清苦"]{--flavor-rgb:134,167,121}
+.seasoning-reference-chip[data-flavor="鲜香"]{--flavor-rgb:155,118,94}
+
+/* 收起状态保留可拖动位置；展开时自动变宽并回到页面中央。 */
+.floating-cook-tray:has(#cookTrayDetails[open]){
+  left:50%!important;right:auto!important;top:auto!important;bottom:18px!important;
+  width:min(940px,calc(100vw - 56px))!important;
+  max-width:none!important;
+  transform:translateX(-50%)!important;
+}
+.floating-cook-tray:has(#cookTrayDetails[open]) .floating-cook-body{
+  max-height:min(54vh,520px);
+  padding:14px 16px 16px;
+}
+.floating-cook-tray:has(#cookTrayDetails[open]) .cook-selection-grid{
+  grid-template-columns:repeat(auto-fill,minmax(132px,1fr));
+  gap:12px;
+}
+.floating-cook-tray:has(#cookTrayDetails[open]) .floating-cook-controls{
+  grid-template-columns:minmax(320px,1fr) 130px auto;
+  gap:12px;
+}
+@media(max-width:900px){
+  .floating-cook-tray:has(#cookTrayDetails[open]){width:calc(100vw - 18px)!important;bottom:8px!important}
+  .floating-cook-tray:has(#cookTrayDetails[open]) .floating-cook-controls{grid-template-columns:1fr 96px}
+  .seasoning-reference-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+</style>
+
+
+<style id="v28-fixed-floating-menu-fix">
+/* V28: 本次菜单始终属于视口悬浮层，禁止卡片呼吸动画干扰 fixed 定位。 */
+#floatingCookTray{
+  position:fixed!important;
+  z-index:9999!important;
+  animation:none!important;
+  margin:0!important;
+}
+/* 收起时沿用拖动后保存的位置；没有拖动位置时固定在视口底部中央。 */
+#floatingCookTray:not(.is-positioned){
+  left:50%!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:12px!important;
+  transform:translateX(-50%)!important;
+}
+/* 展开时无视拖动产生的内联 left/top/bottom，始终固定在当前视口中央。 */
+#floatingCookTray:has(#cookTrayDetails[open]){
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  top:50%!important;
+  bottom:auto!important;
+  transform:translate(-50%,-50%)!important;
+  width:min(940px,calc(100vw - 48px))!important;
+  max-width:none!important;
+  max-height:min(78vh,680px)!important;
+}
+#floatingCookTray:has(#cookTrayDetails[open]) .floating-cook-body{
+  max-height:calc(min(78vh,680px) - 54px)!important;
+  overflow:auto!important;
+}
+@media(max-width:900px){
+  #floatingCookTray:not(.is-positioned){bottom:8px!important;width:calc(100vw - 18px)!important}
+  #floatingCookTray:has(#cookTrayDetails[open]){
+    top:50%!important;bottom:auto!important;
+    width:calc(100vw - 18px)!important;
+    max-height:82vh!important;
+  }
+  #floatingCookTray:has(#cookTrayDetails[open]) .floating-cook-body{max-height:calc(82vh - 54px)!important}
+}
+</style>
+
+
+<style id="v30-layout-drag-polish">
+/* 生活简报录入区：所有控件回到统一纵向节奏，保存按钮独占整行。 */
+.diary-entry-card{display:block!important}
+.diary-entry-card>label{display:block;width:100%;margin:12px 0 0!important}
+.diary-entry-card textarea,.diary-entry-card input[type="file"]{width:100%;box-sizing:border-box}
+#saveDiary{display:flex!important;width:100%!important;min-height:44px;justify-content:center;align-items:center;margin:14px 0 0!important;clear:both;box-sizing:border-box}
+
+/* 三道横向防滑纹：只承担拖动，不承担 details 展开。 */
+.cook-drag-handle{
+  flex:0 0 30px!important;width:30px!important;height:32px!important;
+  display:flex!important;flex-direction:column;justify-content:center;align-items:center;gap:3px;
+  padding:0!important;border-radius:10px;cursor:grab;touch-action:none;user-select:none;
+  background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.66);
+  box-shadow:inset 0 1px rgba(255,255,255,.92),0 3px 10px rgba(75,75,88,.06);
+  font-size:0!important;color:transparent!important;
+}
+.cook-drag-handle i{display:block;width:15px;height:1.5px;border-radius:999px;background:rgba(91,91,101,.48);box-shadow:0 1px rgba(255,255,255,.75);pointer-events:none}
+.cook-drag-handle:hover i{background:linear-gradient(90deg,rgba(245,145,170,.62),rgba(166,144,239,.60),rgba(114,190,232,.62))}
+.cook-drag-handle:active{cursor:grabbing}
+
+/* 展开仍是 fixed 浮层，但以用户拖放位置为锚点，不再强制跳到中央。 */
+#floatingCookTray:has(#cookTrayDetails[open]){
+  position:fixed!important;
+  width:min(820px,calc(100vw - 24px))!important;
+  max-width:calc(100vw - 24px)!important;
+  transform:none!important;
+  bottom:auto!important;
+  margin:0!important;
+}
+#floatingCookTray:has(#cookTrayDetails[open]) .floating-cook-body{max-height:min(62vh,560px)!important;overflow:auto!important}
+@media(max-width:900px){
+  #floatingCookTray:has(#cookTrayDetails[open]){width:calc(100vw - 16px)!important;max-width:calc(100vw - 16px)!important}
+}
+</style>
+
+
+<style id="v31-floating-position-fix">
+/* V31: 收起与展开共用同一套可拖动坐标，旧版居中规则不再覆盖用户位置。 */
+#floatingCookTray.is-positioned{
+  position:fixed!important;
+  left:var(--tray-left)!important;
+  top:var(--tray-top)!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+}
+#floatingCookTray.is-positioned:has(#cookTrayDetails[open]){
+  left:var(--tray-left)!important;
+  top:var(--tray-top)!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  width:min(820px,calc(100vw - 24px))!important;
+  max-width:calc(100vw - 24px)!important;
+}
+#floatingCookTray.dragging{cursor:grabbing!important}
+#floatingCookTray.dragging .cook-drag-handle{cursor:grabbing!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">暖居厨房</div>
+    <div class="brand-sub">HOME KITCHEN COMPANION</div>
+    <nav class="nav user-nav">
+      <button class="active" data-page="home">今天吃什么</button>
+      <button data-page="inventory">食材入库</button>
+      <button data-page="seasoning">调料库存</button>
+      <button data-page="recipes">菜谱图鉴</button>
+      <button data-page="fridge">冰箱</button>
+      <button data-page="preferences">喜好记录</button>
+      <button data-page="diary">生活简报</button>
+    </nav>
+    <nav class="nav developer-nav">
+      <button class="active" data-page="developerDashboard">开发者总览</button>
+      <button data-page="developerIngredients">食材模板</button>
+      <button data-page="developerRecipes">菜谱模板</button>
+      <button data-page="developerPreferences">喜好模板</button>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div class="title">
+        <h1 id="pageTitle">今天吃什么？</h1>
+        <p>把做饭变成一段可以被记住的生活。</p>
+      </div>
+      <div class="toolbar">
+        <div class="partner-picker">
+          <button id="partnerPickerBtn" class="pill" type="button">选择同行角色</button>
+          <div id="partnerPickerPanel" class="partner-panel hidden">
+            <div class="muted" style="margin-bottom:8px">可单选或多选；用户页面只会显示这里选中的角色。</div>
+            <div id="partnerCheckboxes"></div>
+            <button id="closePartnerPicker" class="btn primary" style="width:100%;margin-top:10px">确认</button>
+          </div>
+        </div>
+        <button id="developerEntryBtn" class="pill">开发者入口</button>
+        <button id="leaveDeveloperBtn" class="pill developer-only hidden">返回用户模式</button>
+      </div>
+    </div>
+
+    <section id="home" class="page active">
+      <div class="home-hero">
+        <div class="stamina-chip">
+          <div class="row space"><b>体力参考</b><button class="btn" id="toggleStaminaEdit">设置</button></div>
+          <div class="stamina-number"><span id="staminaNow">91</span>/<span id="staminaMaxText">720</span></div>
+          <div class="progress"><div id="staminaBar"></div></div>
+          <p class="muted" id="staminaText"></p>
+          <div id="staminaEditor" class="drawer hidden">
+            <div class="form-grid">
+              <label>当下体力<input id="staminaInput" type="number" min="0" max="720"></label>
+            </div>
+            <p class="muted">体力仅作家园状态参考，不限制做饭记录。</p>
+            <button class="btn primary" id="saveStamina">保存当下体力</button>
+          </div>
+          <div class="home-seasoning-summary">
+            <b>调料参考</b>
+            <div id="seasoningSummary" class="tags"></div>
+            <p class="muted" style="margin:7px 0 0">推荐会参考现有调料；没有可用调料时按原味制作。</p>
+          </div>
+        </div>
+
+        <div class="card recommendation-card">
+          <div class="row space" style="padding-right:210px">
+            <div><h2>今日推荐</h2><p class="muted">只根据你们的喜好、现有库存与菜谱匹配计算，不等于已经决定要做。</p></div>
+            <button class="btn" id="refreshRecommendation">重新计算</button>
+          </div>
+          <div class="row" style="margin-top:16px">
+            <label style="min-width:140px">今天想吃
+              <select id="mealType"><option value="meal">正餐</option><option value="tea">茶歇</option></select>
+            </label>
+            <label style="min-width:150px">为谁推荐
+              <select id="eaterMode"><option value="together">我们一起吃</option><option value="self">我自己吃</option><option value="partner">给他吃</option></select>
+            </label>
+            <span class="mini">同行：<span id="partnerSummary"></span></span>
+          </div>
+          <div id="recommendationGrid" class="recommendation-grid"></div>
+          <details class="choice-panel">
+            <summary>推荐之外，我想看看其他菜谱</summary>
+            <div id="otherRecipeGrid" class="dish-grid"></div>
+          </details>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="inventory" class="page">
+      <div class="section-head">
+        <div><h2>食材入库</h2><p>从开发者设定好的食材中选择，并记录本次实际获得的数量与来源。</p></div>
+      </div>
+
+      <div class="card">
+        <div class="form-grid">
+          <label>选择食材
+            <select id="userIngredientTemplate"></select>
+          </label>
+          <label>星级
+            <select id="userIngredientStars"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+          </label>
+          <label>数量
+            <input id="userIngredientCount" type="number" value="1" min="1">
+          </label>
+          <label>来源
+            <select id="userIngredientSource"></select>
+          </label>
+        </div>
+        <label>小记
+          <textarea id="userIngredientNote" placeholder="例如：今天自动配送到了，或者他带回了新的食材。"></textarea>
+        </label>
+        <button class="btn primary" id="userAddIngredient">确认入库</button>
+      </div>
+
+      <div class="section-head"><div><h2>当前库存</h2><p>这里显示用户已经实际获得的食材。</p></div></div>
+      <div id="ingredientGrid" class="item-grid"></div>
+    </section>
+
+    <section id="seasoning" class="page">
+      <div class="section-head">
+        <div><h2>调料库存</h2><p>五种调料固定存在，数量仅作参考，用户可以随时手动修改。</p></div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <p class="muted">爆辣、果香、酸甜、清苦、鲜香固定存在。统一调整后一次保存即可。</p>
+      </div>
+      <div id="seasoningGrid" class="item-grid"></div>
+      <div class="row" style="justify-content:flex-end;margin-top:14px">
+        <button class="btn primary" id="saveAllSeasonings" type="button">保存全部调料数量</button>
+      </div>
+    </section>
+
+    <section id="recipes" class="page">
+      <div class="section-head">
+        <div><h2>菜谱图鉴</h2><p>浏览开发者设定的菜谱预设；选择制作时由用户填写本次成品星级。</p></div>
+      </div>
+      <div id="recipeGrid" class="dish-grid"></div>
+    </section>
+
+    <section id="fridge" class="page">
+      <div class="section-head"><div><h2>冰箱</h2><p>制作完成的餐品会自动进入这里。</p></div></div>
+      <div id="fridgeGrid" class="dish-grid"></div>
+    </section>
+
+    <section id="preferences" class="page">
+      <div class="card">
+        <div class="row space">
+          <div>
+            <h3>菜品喜好记录</h3>
+            <p class="muted">选择“我自己”或某位男主，为已有菜谱记录四级喜好。</p>
+          </div>
+          <select id="preferenceOwner"></select>
+        </div>
+        <div id="preferenceEditor"></div>
+      </div>
+    </section>
+
+    <section id="diary" class="page">
+      <div class="grid cards">
+        <div class="card diary-entry-card">
+          <h3>记录吃掉的餐品</h3>
+          <p class="muted">可以一次勾选这一餐吃掉的多种餐品；每种也可以选择本次吃掉的数量。</p>
+          <details class="meal-picker">
+            <summary>展开选择这一餐吃掉的餐品</summary>
+            <div id="diaryMealChecklist" class="meal-checklist"></div>
+          </details>
+          <div class="form-grid">
+            <label>谁吃了<select id="diaryEater"></select></label>
+          </div>
+          <label>生活小记<textarea id="diaryText" placeholder="可选：今天发生了什么……"></textarea></label>
+          <label>照片<input id="diaryImage" type="file" accept="image/*"></label>
+          <button id="saveDiary" class="btn primary">保存这一餐并扣除所选餐品</button>
+        </div>
+        <div class="card">
+          <div class="row space"><div><h3>生活简报</h3><p class="muted" style="margin:3px 0 0">选择一条简报，在它下面继续写当天的细节。</p></div><button class="btn" id="undoLast">撤回上一条库存操作</button></div>
+          <div id="logList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="developerDashboard" class="page developer-page">
+      <div id="developerStatus" class="card hidden" style="margin-bottom:16px"></div>
+      <div class="grid cards">
+        <button class="card developer-jump" type="button" data-jump-page="developerIngredients"><h3>食材模板</h3><div class="stamina-number" id="devIngredientCount">0</div><p class="muted">添加图片、名称、分类；点击进入编辑。</p><span class="btn primary">进入食材编辑</span></button>
+        <button class="card developer-jump" type="button" data-jump-page="developerRecipes"><h3>菜谱模板</h3><div class="stamina-number" id="devRecipeCount">0</div><p class="muted">编辑成品名称、图片，以及固定食材与任选食材组。星级由用户制作时填写。</p><span class="btn primary">进入菜谱编辑</span></button>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h3>开发者说明</h3>
+        <p class="muted">开发者模式填写的是用户页面直接读取的预设：食材模板会进入“食材入库”的选择框，菜谱模板会进入“今日推荐”和“菜谱图鉴”。用户模式只负责填写实际星级、数量、制作与食用记录。</p>
+        <button id="changePasswordBtn" class="btn">修改开发者密码</button>
+      </div>
+    </section>
+
+    <section id="developerIngredients" class="page developer-page">
+      <div class="section-head"><div><h2>食材模板</h2><p>在这里定义用户模式可以选择的食材预设。星级由用户每次入库时填写。</p></div></div>
+      <div class="card">
+        <div id="ingredientEditBanner" class="edit-banner hidden"></div>
+        <div class="form-grid">
+          <label>食材名称<input id="devIngredientName" placeholder="例如：番茄"></label>
+          <label>分类<select id="devIngredientCategory"><option>肉禽蛋</option><option>米面杂粮</option><option>烘焙</option><option>水产海鲜</option><option>水果</option><option>蔬菜豆品</option><option>饮料冲调</option><option>干货</option></select></label>
+          <label>图片<input id="devIngredientImage" type="file" accept="image/*"></label>
+        </div>
+        <div class="row"><button class="btn primary" id="devSaveIngredient">添加食材模板</button><button class="btn hidden" id="cancelIngredientEdit">取消编辑</button></div>
+      </div>
+      <div class="row space" style="margin-top:20px"><h3>已录入食材</h3><span class="tag">添加后会立即显示在这里</span></div><div id="developerIngredientGrid" class="item-grid" style="margin-top:12px"></div>
+    </section>
+
+    <section id="developerRecipes" class="page developer-page">
+      <div class="section-head"><div><h2>菜谱模板</h2><p>在这里添加菜谱、图片、品类、配方和口味。</p></div></div>
+      <div class="card">
+        <div id="recipeEditBanner" class="edit-banner hidden"></div>
+        <div class="form-grid">
+          <label>菜名<input id="devRecipeName" placeholder="例如：番茄炒蛋"></label>
+          <label>品类<select id="devRecipeCategory"><option>主食</option><option>配菜</option><option>汤羹</option><option>甜点</option><option>饮品</option></select></label>
+          <label>解锁等级<input id="devRecipeLevel" type="number" min="1" max="15" value="1"></label>
+          <label>状态<select id="devRecipeKnown"><option value="known">已知菜谱</option><option value="unknown">未知菜谱</option><option value="hidden">隐藏/失败菜谱</option></select></label>
+          <label>可用口味<input id="devRecipeFlavors" placeholder="原味,爆辣,鲜香"></label>
+          <label>图片<input id="devRecipeImage" type="file" accept="image/*"></label>
+        </div>
+        <div class="rule-box">
+          <b>固定必需食材</b><div class="muted">每次制作都必须消耗这些食材。</div>
+          <div class="rule-row"><label>食材<select id="fixedIngredientSelect"></select></label><label>数量<input id="fixedIngredientAmount" type="number" min="1" value="1"></label><button class="btn" id="addFixedIngredient">添加</button></div>
+          <div id="recipeIngredientEmptyHint" class="muted hidden" style="margin:10px 0">还没有可选食材。请先去“食材模板”添加。</div><div id="fixedIngredientRules"></div>
+        </div>
+        <div class="rule-box">
+          <b>可替代食材组</b><div class="muted">组内任选一种即可。例：土豆 / 番茄 / 青菜任选一种，消耗 1 个。</div>
+          <div class="form-grid" style="margin-top:8px"><label>组名<input id="alternativeGroupLabel" placeholder="例如：任意蔬菜"></label><label>每次消耗数量<input id="alternativeGroupAmount" type="number" min="1" value="1"></label><label class="wide-card">可选食材（可多选）<select id="alternativeIngredientSelect" multiple size="5"></select></label></div>
+          <button class="btn" id="addAlternativeGroup">添加可替代组</button><div id="alternativeIngredientRules"></div>
+        </div>
+        <div class="row" style="margin-top:14px"><button class="btn primary" id="devSaveRecipe">添加菜谱模板</button><button class="btn hidden" id="cancelRecipeEdit">取消编辑</button></div>
+      </div>
+      <div class="row space" style="margin-top:20px"><h3>已录入菜谱</h3><span class="tag">可重新编辑或删除</span></div><div id="developerRecipeGrid" class="dish-grid" style="margin-top:12px"></div>
+    </section>
+
+    <section id="developerPreferences" class="page developer-page">
+      <div class="card">
+        <div class="row space">
+          <div><h3>默认喜好模板</h3><p class="muted">开发者可以预设每位角色对每道菜的喜好。</p></div>
+          <select id="developerPreferenceOwner"></select>
+        </div>
+        <div id="developerPreferenceEditor"></div>
+      </div>
+    </section>
+
+
+
+    <div id="developerLoginModal" class="modal hidden">
+      <div class="modal-card">
+        <h3>进入开发者模式</h3>
+        <p class="muted">请输入开发者密码。初始密码为 1234，进入后可在开发者总览中修改。</p>
+        <input id="developerPasswordInput" type="password" placeholder="输入密码">
+        <div class="row" style="margin-top:12px;justify-content:flex-end">
+          <button id="cancelDeveloperLogin" class="btn">取消</button>
+          <button id="confirmDeveloperLogin" class="btn primary">进入</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+  <aside id="floatingCookTray" class="floating-cook-tray" aria-label="本次菜单">
+    <details id="cookTrayDetails">
+      <summary>
+        <span id="cookDragHandle" class="cook-drag-handle" title="拖动本次菜单" aria-label="拖动本次菜单"><i></i><i></i><i></i></span>
+        <div class="cook-tray-summary-main">
+          <span class="cook-tray-title"><b>本次菜单</b><small id="cookTraySummary">还没有选择餐品</small></span>
+          <div id="cookMiniPreview" class="cook-mini-preview"></div>
+        </div>
+        <button id="cookTrayEditBtn" class="cook-edit-btn" type="button">展开编辑</button>
+      </summary>
+      <div class="floating-cook-body">
+        <div id="selectedDetail" class="cook-selection-grid empty">还没有选择菜品。请从“今天吃什么”或“菜谱图鉴”中添加。</div>
+        <div class="floating-cook-controls">
+          <div class="cook-mode compact">
+            <label><input type="radio" name="cookMode" value="self" checked><span>我自己做</span></label>
+            <label><input type="radio" name="cookMode" value="together"><span>一起做</span></label>
+            <label><input type="radio" name="cookMode" value="partner"><span>让他做</span></label>
+          </div>
+          <label class="compact-field">成品星级<select id="cookResultStars"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label>
+          <button id="cookSelected" class="btn primary">确认制作</button>
+        </div>
+      </div>
+    </details>
+  </aside>
+
+
+<script>
+const defaultData = {
+  mode:"user",
+  stamina:{current:91,max:720,rate:10,cost:60,lastUpdated:Date.now()},
+  partners:["沈星回","黎深","祁煜","秦彻","夏以昼"],
+  currentPartner:"沈星回",
+  selectedPartners:["沈星回"],
+  ingredientTemplates:[
+    {id:crypto.randomUUID(),name:"土豆",category:"蔬菜豆品",image:""},
+    {id:crypto.randomUUID(),name:"牛肉",category:"肉禽蛋",image:""},
+    {id:crypto.randomUUID(),name:"鸡蛋",category:"肉禽蛋",image:""},
+    {id:crypto.randomUUID(),name:"面粉",category:"米面杂粮",image:""}
+  ],
+  ingredients:[],
+  seasoningTemplates:[
+    {id:crypto.randomUUID(),name:"爆辣粉",flavor:"爆辣",image:""},
+    {id:crypto.randomUUID(),name:"树莓粉",flavor:"果香",image:""},
+    {id:crypto.randomUUID(),name:"橙皮粉",flavor:"酸甜",image:""},
+    {id:crypto.randomUUID(),name:"苦菊粉",flavor:"清苦",image:""},
+    {id:crypto.randomUUID(),name:"菌菇粉",flavor:"鲜香",image:""}
+  ],
+  seasonings:[],
+  recipes:[
+    {id:crypto.randomUUID(),name:"土豆烧牛腩",category:"配菜",level:1,known:"known",flavors:["原味","爆辣","鲜香"],ingredients:{土豆:3,牛肉:1},requiredIngredients:{土豆:3,牛肉:1},alternativeGroups:[],image:"",preference:5},
+    {id:crypto.randomUUID(),name:"鸡蛋面",category:"主食",level:1,known:"known",flavors:["原味","鲜香"],ingredients:{鸡蛋:2,面粉:1},requiredIngredients:{鸡蛋:2,面粉:1},alternativeGroups:[],image:"",preference:4},
+    {id:crypto.randomUUID(),name:"白米饭",category:"主食",level:1,known:"known",flavors:["原味"],ingredients:{},requiredIngredients:{},alternativeGroups:[],image:"",preference:2,infinite:true}
+  ],
+  preferences:{
+    self:{},
+    partners:{"沈星回":{},"黎深":{},"祁煜":{},"秦彻":{},"夏以昼":{}}
+  },
+  fridge:[],
+  logs:[],
+  diary:[],
+  selected:[],
+  selectedFlavors:{},
+  developer:{password:"1234",authenticated:false}
+};
+let data = load();
+
+function load(){
+  const saved = localStorage.getItem("warmKitchenData");
+  const d = saved ? JSON.parse(saved) : structuredClone(defaultData);
+
+  // 兼容之前版本的数据
+  if(d.mode==="interaction") d.mode="user";
+  if(d.mode==="edit") d.mode="developer";
+  const defaults=["沈星回","黎深","祁煜","秦彻","夏以昼"];
+  const customPartners=(d.partners||[]).filter(p=>!defaults.includes(p));
+  d.partners=[...defaults,...customPartners];
+  const previouslySelected=(d.selectedPartners&&d.selectedPartners.length?d.selectedPartners:[d.currentPartner||"沈星回"])
+    .filter(p=>d.partners.includes(p));
+  d.selectedPartners=d.partners.filter(p=>previouslySelected.includes(p));
+  if(!d.selectedPartners.length)d.selectedPartners=["沈星回"];
+  d.currentPartner=d.selectedPartners[0];
+  // 把旧版本中的“实际库存”与“可选模板”拆开
+  // V9：开发者模板只定义预设，不保存星级。
+  d.ingredientTemplates=d.ingredientTemplates||[];
+  if(!d.ingredientTemplates.length && d.ingredients?.length){
+    d.ingredientTemplates=d.ingredients.map(i=>({id:crypto.randomUUID(),name:i.name,category:i.category||"未分类",image:i.image||""}));
+  }
+  d.ingredientTemplates.forEach(t=>delete t.stars);
+  d.ingredients=d.ingredients||[];
+  d.seasoningTemplates=[
+    {id:"seasoning-spicy",name:"爆辣粉",flavor:"爆辣",image:""},
+    {id:"seasoning-fruity",name:"树莓粉",flavor:"果香",image:""},
+    {id:"seasoning-sweet-sour",name:"橙皮粉",flavor:"酸甜",image:""},
+    {id:"seasoning-bitter",name:"苦菊粉",flavor:"清苦",image:""},
+    {id:"seasoning-umami",name:"菌菇粉",flavor:"鲜香",image:""}
+  ];
+  d.seasonings=d.seasonings||[];
+  d.seasoningTemplates.forEach(t=>delete t.stars);
+  d.developer=d.developer||{password:"1234",authenticated:false};
+  d.developer.authenticated=false;
+  d.preferences=d.preferences||{self:{},partners:{}};
+  d.preferences.self=d.preferences.self||{};
+  d.preferences.partners=d.preferences.partners||{};
+  d.partners.forEach(p=>d.preferences.partners[p]=d.preferences.partners[p]||{});
+  (d.recipes||[]).forEach(r=>{
+    r.requiredIngredients=r.requiredIngredients||r.ingredients||{};
+    r.alternativeGroups=r.alternativeGroups||[];
+    r.ingredients=r.requiredIngredients;
+    if(r.preference!==undefined && d.preferences.self[r.id]===undefined){
+      d.preferences.self[r.id]=Math.max(0,Math.min(3,Math.round((r.preference||0)*3/5)));
+    }
+  });
+  return d;
+}
+function save(){
+  localStorage.setItem("warmKitchenData",JSON.stringify(data));
+  // 开发者后台独立刷新，不能被用户页面某个模块的报错连带阻断
+  renderDeveloperPagesSafe();
+  renderRecipeTemplateSelectorsSafe();
+  try{ renderAll(); }catch(err){
+    console.error("页面局部刷新失败：",err);
+    showDeveloperStatus("内容已经保存；其他页面有旧数据兼容问题，但开发者列表已独立刷新。",true);
+  }
+}
+function stars(n,max=5){ return "★".repeat(n)+"☆".repeat(Math.max(0,max-n)); }
+function imageHTML(src,emoji="🍽️"){ return src?`<img src="${src}" alt="">`:`<div class="placeholder">${emoji}</div>`; }
+function readImage(file){
+  return new Promise(resolve=>{
+    if(!file) return resolve("");
+    const r=new FileReader(); r.onload=()=>resolve(r.result); r.readAsDataURL(file);
+  });
+}
+function updateStamina(){ /* V9：体力只由用户手动记录，不自动恢复 */ }
+function ingredientTotal(name){return data.ingredients.filter(i=>i.name===name).reduce((a,b)=>a+b.count,0)}
+function canMake(recipe){
+  const fixed=Object.entries(recipe.requiredIngredients||recipe.ingredients||{}).every(([name,need])=>ingredientTotal(name)>=need);
+  const alternatives=(recipe.alternativeGroups||[]).every(g=>(g.options||[]).some(name=>ingredientTotal(name)>=(g.amount||1)));
+  return fixed&&alternatives;
+}
+function consumeRecipeIngredients(recipe){
+  const consumed=[];
+  Object.entries(recipe.requiredIngredients||recipe.ingredients||{}).forEach(([name,n])=>{removeIngredientByName(name,n);consumed.push({name,amount:n})});
+  (recipe.alternativeGroups||[]).forEach(g=>{const chosen=(g.options||[]).find(name=>ingredientTotal(name)>=(g.amount||1));if(chosen){removeIngredientByName(chosen,g.amount||1);consumed.push({name:chosen,amount:g.amount||1})}});
+  return consumed;
+}
+function recipeRuleText(r){
+  const fixed=Object.entries(r.requiredIngredients||r.ingredients||{}).map(([n,c])=>`${n}×${c}`);
+  const groups=(r.alternativeGroups||[]).map(g=>`${g.label||"任选"}（${(g.options||[]).join("/")}）×${g.amount||1}`);
+  return [...fixed,...groups].join("＋")||"无食材要求";
+}
+function preferenceValue(ownerKey, recipeId){
+  if(ownerKey==="self") return data.preferences?.self?.[recipeId] ?? 1;
+  return data.preferences?.partners?.[ownerKey]?.[recipeId] ?? 1;
+}
+function availableSeasoningFlavors(){
+  return (data.seasonings||[]).filter(s=>(+s.count||0)>0).map(s=>s.flavor);
+}
+function makeableFlavorsForRecipe(r){
+  const available=new Set(availableSeasoningFlavors());
+  const recipeFlavors=Array.isArray(r.flavors)?r.flavors:[];
+  const result=["原味"];
+  recipeFlavors.forEach(f=>{if(f!=="原味"&&available.has(f)&&!result.includes(f))result.push(f)});
+  return result;
+}
+function chosenFlavorForRecipe(r){
+  const options=makeableFlavorsForRecipe(r);
+  return options.find(f=>f!=="原味")||"原味";
+}
+function consumeSeasoningFlavor(flavor){
+  if(!flavor||flavor==="原味")return null;
+  const item=(data.seasonings||[]).find(s=>s.flavor===flavor&&(+s.count||0)>0);
+  if(!item)return null;
+  item.count-=1;
+  return {templateId:item.templateId,flavor:item.flavor,amount:1};
+}
+function recipeScore(r){
+  const eater=document.getElementById("eaterMode")?.value||"together";
+  const selfPref=preferenceValue("self",r.id);
+  const selected=(data.selectedPartners||[]).filter(p=>data.partners.includes(p));
+  const partnerPrefs=selected.map(p=>preferenceValue(p,r.id));
+  const partnerPref=partnerPrefs.length?partnerPrefs.reduce((a,b)=>a+b,0)/partnerPrefs.length:1;
+  let prefScore=0;
+  if(eater==="self") prefScore=selfPref;
+  else if(eater==="partner") prefScore=partnerPref;
+  else prefScore=selfPref+partnerPref;
+  const flavor=chosenFlavorForRecipe(r);
+  const seasoningBonus=flavor!=="原味"?18:0;
+  return (canMake(r)?100:0)+seasoningBonus+prefScore*8-(r.level||1);
+}
+function addLog(text,undo=null,image=""){
+  data.logs.unshift({id:crypto.randomUUID(),date:new Date().toLocaleString("zh-CN"),text,undo,image});
+}
+function removeIngredientByName(name,amount){
+  let remaining=amount;
+  for(const item of data.ingredients.filter(i=>i.name===name)){
+    const take=Math.min(item.count,remaining);
+    item.count-=take; remaining-=take;
+    if(remaining<=0) break;
+  }
+  return remaining===0;
+}
+function addIngredientByName(name,amount){
+  const item=data.ingredients.find(i=>i.name===name);
+  if(item)item.count+=amount;
+  else data.ingredients.push({id:crypto.randomUUID(),name,category:"未分类",stars:1,count:amount,source:"撤回恢复",note:"",image:""});
+}
+function pageTitle(id){
+  return {home:"今天吃什么？",inventory:"食材入库",seasoning:"调料库存",recipes:"菜谱图鉴",fridge:"冰箱",preferences:"喜好设置",diary:"生活简报",developerDashboard:"开发者总览",developerIngredients:"食材模板",developerRecipes:"菜谱模板",developerPreferences:"喜好模板"}[id];
+}
+
+
+
+function selectedPartnerNames(){
+  return (data.selectedPartners||[]).filter(p=>data.partners.includes(p));
+}
+
+
+
+
+
+function renderUserTemplateControls(){
+  const ingredientSelect=document.getElementById("userIngredientTemplate");
+  const sourceSelect=document.getElementById("userIngredientSource");
+  const templates=normalizedIngredientTemplates();
+  data.ingredientTemplates=templates;
+  if(ingredientSelect){
+    const previous=ingredientSelect.value;
+    ingredientSelect.innerHTML=templates.length
+      ? templates.map(t=>`<option value="${escapeHTML(t.id)}">${escapeHTML(t.name)} · ${escapeHTML(t.category)}</option>`).join("")
+      : `<option value="">请先在开发者模式添加食材预设</option>`;
+    if(templates.some(t=>t.id===previous))ingredientSelect.value=previous;
+  }
+  if(sourceSelect){
+    const chosen=selectedPartnerNames();
+    const previous=sourceSelect.value;
+    const values=["自动配送",...chosen.map(p=>`${p}带回来的`)];
+    sourceSelect.innerHTML=values.map(v=>`<option>${escapeHTML(v)}</option>`).join("");
+    if(values.includes(previous))sourceSelect.value=previous;
+  }
+}
+function renderUserTemplateControlsSafe(){
+  try{renderUserTemplateControls()}catch(err){console.error("用户预设刷新失败：",err)}
+}
+let editingIngredientId=null,editingRecipeId=null;
+let draftFixedIngredients={},draftAlternativeGroups=[];
+function syncRecipeRuleEditors(){
+  renderRecipeTemplateSelectorsSafe();
+  const fixedIngredientRules=document.getElementById("fixedIngredientRules");
+  const alternativeIngredientRules=document.getElementById("alternativeIngredientRules");
+  fixedIngredientRules.innerHTML=Object.entries(draftFixedIngredients).map(([n,c])=>`<div class="rule-chip"><span>${n} × ${c}</span><button class="btn danger" data-remove-fixed="${n}">移除</button></div>`).join("")||`<div class="muted" style="margin-top:8px">还没有固定食材</div>`;
+  alternativeIngredientRules.innerHTML=draftAlternativeGroups.map((g,i)=>`<div class="rule-chip"><span>${g.label||"任选一种"}：${g.options.join(" / ")} · 消耗 ${g.amount}</span><button class="btn danger" data-remove-group="${i}">移除</button></div>`).join("")||`<div class="muted" style="margin-top:8px">还没有可替代组</div>`;
+}
+function resetIngredientEditor(){editingIngredientId=null;devIngredientName.value="";devIngredientImage.value="";devSaveIngredient.textContent="添加食材模板";cancelIngredientEdit.classList.add("hidden");ingredientEditBanner.classList.add("hidden")}
+function resetRecipeEditor(){editingRecipeId=null;draftFixedIngredients={};draftAlternativeGroups=[];devRecipeName.value="";devRecipeImage.value="";devSaveRecipe.textContent="添加菜谱模板";cancelRecipeEdit.classList.add("hidden");recipeEditBanner.classList.add("hidden");syncRecipeRuleEditors()}
+function showDeveloperStatus(message,isError=false){
+  const box=document.getElementById("developerStatus");
+  if(!box)return;
+  box.textContent=message;
+  box.classList.remove("hidden");
+  box.style.borderColor=isError?"#d99188":"#b8cfae";
+  box.style.background=isError?"#fff1ef":"#f3faef";
+}
+function normalizedIngredientTemplates(){
+  if(!Array.isArray(data.ingredientTemplates))data.ingredientTemplates=[];
+  return data.ingredientTemplates.filter(Boolean).map((t,index)=>({
+    id:t.id||`ingredient-template-${index}-${Date.now()}`,
+    name:String(t.name||"未命名食材"),
+    category:String(t.category||"未分类"),
+    image:t.image||""
+  }));
+}
+function normalizedRecipes(){
+  if(!Array.isArray(data.recipes))data.recipes=[];
+  return data.recipes.filter(Boolean);
+}
+function renderRecipeTemplateSelectorsSafe(){
+  const templates=normalizedIngredientTemplates();
+  data.ingredientTemplates=templates;
+  const fixed=document.getElementById("fixedIngredientSelect");
+  const alt=document.getElementById("alternativeIngredientSelect");
+  const options=templates.map(t=>`<option value="${escapeHTML(t.name)}">${escapeHTML(t.name)} · ${escapeHTML(t.category)}</option>`).join("");
+  if(fixed)fixed.innerHTML=options;
+  if(alt)alt.innerHTML=options;
+  const empty=document.getElementById("recipeIngredientEmptyHint");
+  if(empty)empty.classList.toggle("hidden",templates.length>0);
+}
+function renderDeveloperPagesSafe(){
+  try{renderDeveloperPages();}
+  catch(err){
+    console.error("开发者后台刷新失败：",err);
+    showDeveloperStatus(`后台刷新失败：${err.message}`,true);
+  }
+}
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function flavorChip(flavor,extraClass=""){
+  const safe=escapeHTML(flavor||"原味");
+  return `<span class="flavor-chip ${extraClass}" data-flavor="${safe}">${safe}</span>`;
+}
+function flavorChips(flavors){
+  return `<div class="flavor-chip-row">${(flavors||[]).map(f=>flavorChip(f)).join("")}</div>`;
+}
+function decorateFlavorText(text){
+  let html=escapeHTML(text||"");
+  ["爆辣","果香","酸甜","清苦","鲜香","原味"].forEach(f=>{
+    html=html.replaceAll(f,flavorChip(f));
+  });
+  return html;
+}
+function renderDeveloperPages(){
+  const templates=normalizedIngredientTemplates();
+  const recipes=normalizedRecipes();
+  data.ingredientTemplates=templates;
+  data.recipes=recipes;
+
+  const ingredientCount=document.getElementById("devIngredientCount");
+  const recipeCount=document.getElementById("devRecipeCount");
+  if(ingredientCount)ingredientCount.textContent=String(templates.length);
+  if(recipeCount)recipeCount.textContent=String(recipes.length);
+
+  const ingredientGrid=document.getElementById("developerIngredientGrid");
+  if(ingredientGrid){
+    ingredientGrid.innerHTML=templates.length?templates.map(t=>`
+      <article class="item" data-template-card="${escapeHTML(t.id)}">
+        <div class="thumb">${imageHTML(t.image,"🥬")}</div>
+        <div class="meta">
+          <div class="name">${escapeHTML(t.name)}</div>
+          <span class="tag">${escapeHTML(t.category)}</span>
+          <div class="template-action">
+            <button class="btn" type="button" data-edit-ingredient-template="${escapeHTML(t.id)}">编辑</button>
+            <button class="btn danger" type="button" data-delete-ingredient-template="${escapeHTML(t.id)}">删除</button>
+          </div>
+        </div>
+      </article>`).join(""):`<div class="empty">还没有食材模板。请在上方填写名称后添加。</div>`;
+  }
+
+  const recipeGrid=document.getElementById("developerRecipeGrid");
+  if(recipeGrid){
+    recipeGrid.innerHTML=recipes.length?recipes.map(r=>`
+      <article class="dish" data-recipe-card="${escapeHTML(r.id)}">
+        <div class="thumb">${imageHTML(r.image)}</div>
+        <div class="meta">
+          <div class="name">${escapeHTML(r.name||"未命名菜谱")}</div>
+          <span class="tag">${escapeHTML(r.category||"未分类")}</span>
+          <div class="muted" style="margin-top:8px">${escapeHTML(recipeRuleText(r))}</div>
+          <div class="template-action">
+            <button class="btn" type="button" data-edit-recipe="${escapeHTML(r.id)}">编辑</button>
+            <button class="btn danger" type="button" data-delete-recipe="${escapeHTML(r.id)}">删除</button>
+          </div>
+        </div>
+      </article>`).join(""):`<div class="empty">还没有菜谱模板。请先添加食材，再编辑菜谱。</div>`;
+  }
+
+  renderRecipeTemplateSelectorsSafe();
+
+  const ownerSelect=document.getElementById("developerPreferenceOwner");
+  if(ownerSelect){
+    const partners=Array.isArray(data.partners)?data.partners:[];
+    const old=ownerSelect.value||partners[0]||"";
+    ownerSelect.innerHTML=partners.map(p=>`<option>${escapeHTML(p)}</option>`).join("");
+    ownerSelect.value=partners.includes(old)?old:(partners[0]||"");
+    try{renderDeveloperPreferences();}catch(err){console.warn(err)}
+  }
+}
+
+function renderDeveloperPreferences(){
+  if(!developerPreferenceOwner)return;
+  const owner=developerPreferenceOwner.value||data.partners[0];
+  const labels=["不喜欢","无感","喜欢","非常喜欢"];
+  developerPreferenceEditor.innerHTML=data.recipes.map(r=>{
+    const value=preferenceValue(owner,r.id);
+    return `<div class="preference-row"><div class="row space"><b>${r.name}</b><span class="muted">${labels[value]}</span></div>
+    <div class="preference-options">${labels.map((label,index)=>`<button class="preference-option ${index===value?"active":""}" data-dev-pref="${r.id}" data-value="${index}">${label}</button>`).join("")}</div></div>`;
+  }).join("")||`<div class="empty">请先添加菜谱。</div>`;
+}
+
+function renderLivingBriefControls(){
+  const checklist=document.getElementById("diaryMealChecklist");
+  const eaterSelect=document.getElementById("diaryEater");
+  if(!checklist||!eaterSelect)return;
+
+  const previouslyChecked=new Set([...checklist.querySelectorAll('input[data-diary-meal]:checked')].map(i=>i.value));
+  const available=(data.fridge||[]).filter(f=>(+f.count||0)>0);
+  checklist.innerHTML=available.length?available.map(f=>{const key=`${f.recipeId}::${+f.stars||1}::${f.flavor||"原味"}`;return `<div class="meal-check">
+    <label>
+      <input type="checkbox" data-diary-meal value="${escapeHTML(key)}" ${previouslyChecked.has(key)?"checked":""}>
+      <div class="meal-thumb">${imageHTML(f.image,"🍽️")}</div>
+      <div class="meal-meta"><div class="meal-name">${escapeHTML(f.name)}</div><div class="meal-info">库存 ×${f.count}<br>${stars(+f.stars||1)}<br>${flavorChip(f.flavor||"原味")}</div></div>
+    </label>
+    <select data-diary-count="${escapeHTML(key)}">${Array.from({length:Math.max(1,+f.count||1)},(_,i)=>`<option value="${i+1}">${i+1}份</option>`).join("")}</select>
+  </div>`}).join(""):`<div class="empty">冰箱里暂时没有餐品</div>`;
+
+  const previousEater=eaterSelect.value;
+  const selected=selectedPartnerNames();
+  const eaterOptions=[{value:"我",label:"我"}];
+  selected.forEach(name=>{
+    eaterOptions.push({value:`我和${name}`,label:`我和${name}`});
+    eaterOptions.push({value:name,label:name});
+  });
+  eaterSelect.innerHTML=eaterOptions.map(o=>`<option value="${escapeHTML(o.value)}">${escapeHTML(o.label)}</option>`).join("");
+  if(eaterOptions.some(o=>o.value===previousEater))eaterSelect.value=previousEater;
+}
+function renderAll(){
+  renderDeveloperPagesSafe();
+  renderUserTemplateControlsSafe();
+  renderRecipeTemplateSelectorsSafe();
+  updateStamina();
+  document.body.classList.toggle("developer-mode",data.mode==="developer" && data.developer.authenticated);
+  document.getElementById("leaveDeveloperBtn").classList.toggle("hidden",!(data.mode==="developer" && data.developer.authenticated));
+
+  const chosen=selectedPartnerNames();
+  partnerPickerBtn.textContent=chosen.length?chosen.join("、"):"选择同行角色";
+  partnerCheckboxes.innerHTML=data.partners.map(p=>`
+    <label class="partner-check">
+      <input type="checkbox" value="${p}" ${chosen.includes(p)?"checked":""}>
+      <span>${p}</span>
+    </label>`).join("");
+  document.getElementById("partnerSummary").textContent=chosen.length?chosen.join("、"):"今天自己吃";
+
+  const s=data.stamina;
+  document.getElementById("staminaNow").textContent=Math.floor(s.current);
+  document.getElementById("staminaMaxText").textContent=Math.floor(s.max);
+  document.getElementById("staminaBar").style.width=`${Math.min(100,s.current/s.max*100)}%`;
+  document.getElementById("staminaText").textContent=`当前 ${Math.floor(s.current)} 点，仅作参考`;
+  document.getElementById("staminaInput").value=s.current;
+
+  renderSeasoning();
+  renderIngredients();
+  renderRecipes();
+  renderRecommendations();
+  renderFridge();
+  renderPreferences();
+  renderLogs();
+  refreshSources();
+  renderLivingBriefControls();
+  syncRecipeRuleEditors();
+}
+function renderSeasoning(){
+  const colors={爆辣:"#e67367",果香:"#e7a85d",酸甜:"#e8a7b7",清苦:"#86a779",鲜香:"#9b765e"};
+  const templates=Array.isArray(data.seasoningTemplates)?data.seasoningTemplates:[];
+  const rows=templates.map(t=>{
+    const saved=(data.seasonings||[]).find(s=>s.templateId===t.id);
+    return saved||{templateId:t.id,name:t.name,flavor:t.flavor,count:0,image:t.image||""};
+  });
+  const summary=document.getElementById("seasoningSummary");
+  if(summary){
+    summary.className="seasoning-reference-grid";
+    summary.innerHTML=rows.map(s=>`<span class="seasoning-reference-chip" data-flavor="${escapeHTML(s.flavor)}"><span class="seasoning-reference-name">${escapeHTML(s.flavor)}</span><b>${Math.max(0,+s.count||0)}</b></span>`).join("");
+  }
+  const grid=document.getElementById("seasoningGrid");
+  if(!grid)return;
+  grid.innerHTML=rows.map(s=>{
+    const color=colors[s.flavor]||"#b8b8b8";
+    return `
+    <article class="item seasoning-color-card" style="--seasoning-color:${color};background:linear-gradient(145deg,${color}24,rgba(255,255,255,.54) 58%,${color}10);border-color:${color}55;box-shadow:0 12px 30px ${color}18,inset 0 1px 0 rgba(255,255,255,.86)">
+      <div class="thumb" style="background:linear-gradient(145deg,${color}32,rgba(255,255,255,.42))">${imageHTML(s.image,"🧂")}</div>
+      <div class="meta">
+        <div class="name">${escapeHTML(s.name)}</div>
+        <span class="tag" style="background:${color}2b;color:${color};border:1px solid ${color}45"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};box-shadow:0 0 10px ${color}66;margin-right:5px"></span>${escapeHTML(s.flavor)}</span>
+        <label style="margin-top:10px">参考数量
+          <input type="number" min="0" value="${Math.max(0,+s.count||0)}" data-seasoning-input="${escapeHTML(s.templateId)}">
+        </label>
+      </div>
+    </article>`;
+  }).join("");
+}
+function groupedIngredients(){
+  const map=new Map();
+  (data.ingredients||[]).filter(i=>(+i.count||0)>0).forEach(i=>{
+    const key=`${i.templateId||i.name}::${+i.stars||1}`;
+    if(!map.has(key))map.set(key,{...i,count:0,sources:new Set()});
+    const row=map.get(key);row.count+=+i.count||0;if(i.source)row.sources.add(i.source);
+  });
+  return [...map.values()].map(i=>({...i,source:[...i.sources].join("、")}));
+}
+function renderIngredients(){
+  document.getElementById("ingredientGrid").innerHTML=groupedIngredients().map(i=>`
+    <article class="item">
+      <div class="thumb">${imageHTML(i.image,"🥬")}</div>
+      <div class="meta"><span class="count">×${i.count}</span><div class="name">${escapeHTML(i.name)}</div><div class="stars">${stars(i.stars)}</div><span class="tag">${escapeHTML(i.source||"已入库")}</span></div>
+    </article>`).join("")||`<div class="empty">暂无食材</div>`;
+}
+data.selectedFlavors=data.selectedFlavors||{};
+
+function renderRecipes(){
+  document.getElementById("recipeGrid").innerHTML=data.recipes.map(r=>`
+    <article class="dish">
+      <div class="thumb">${imageHTML(r.image)}</div>
+      <div class="meta"><span class="count">${canMake(r)?"可制作":"缺食材"}</span><div class="name">${escapeHTML(r.name)}</div><span class="tag">${escapeHTML(r.category)}</span>${flavorChips(makeableFlavorsForRecipe(r))}</div>
+      <button class="recipe-select-btn ${data.selected.includes(r.id)?"active":""}" data-library-recipe="${r.id}">${data.selected.includes(r.id)?"已加入这次选择":"选择做这些"}</button>
+    </article>`).join("");
+}
+function recommendationCard(r,index){
+  const flavors=makeableFlavorsForRecipe(r);
+  return `<article class="dish ${data.selected.includes(r.id)?"selected":""}" data-recipe="${r.id}" style="position:relative">
+    ${index<3?`<span class="recommended-badge">推荐 ${index+1}</span>`:""}
+    <div class="thumb">${imageHTML(r.image)}</div>
+    <div class="meta"><span class="count">${canMake(r)?"库存充足":"食材不足"}</span><div class="name">${escapeHTML(r.name)}</div>${flavorChips(flavors)}</div>
+    <button class="recipe-select-btn ${data.selected.includes(r.id)?"active":""}">${data.selected.includes(r.id)?"已加入这次选择":"选择做这些"}</button>
+  </article>`;
+}
+function renderRecommendations(){
+  const mealType=document.getElementById("mealType").value;
+  let list=[...data.recipes].sort((a,b)=>recipeScore(b)-recipeScore(a));
+  list=mealType==="tea"?list.filter(r=>["饮品","甜点"].includes(r.category)):list.filter(r=>["主食","配菜","汤羹","甜点","饮品"].includes(r.category));
+  const recommended=list.slice(0,3), others=list.slice(3);
+  document.getElementById("recommendationGrid").innerHTML=recommended.map(recommendationCard).join("")||`<div class="empty">当前没有可推荐菜谱</div>`;
+  document.getElementById("otherRecipeGrid").innerHTML=others.map((r,i)=>recommendationCard(r,i+3)).join("")||`<div class="empty">没有其他菜谱</div>`;
+  const selected=data.recipes.filter(r=>data.selected.includes(r.id));
+  const traySummary=document.getElementById("cookTraySummary");
+  if(traySummary)traySummary.textContent=selected.length?`${selected.length} 道餐品`:"还没有选择餐品";
+  const miniPreview=document.getElementById("cookMiniPreview");
+  if(miniPreview)miniPreview.innerHTML=selected.length?selected.slice(0,3).map(r=>{const flavor=data.selectedFlavors[r.id]||"原味";return `<div class="cook-mini-item"><div class="cook-mini-image">${imageHTML(r.image,"🍽️")}</div><div class="cook-mini-text"><div class="cook-mini-name">${escapeHTML(r.name)}</div><div class="cook-mini-flavor">${flavorChip(flavor)}</div></div></div>`}).join("")+(selected.length>3?`<span class="mini">+${selected.length-3}</span>`:""):`<span class="muted">从推荐或图鉴加入</span>`;
+  const detail=document.getElementById("selectedDetail");
+  detail.classList.toggle("empty",!selected.length);
+  detail.innerHTML=selected.length?selected.map(r=>{
+    const options=makeableFlavorsForRecipe(r);
+    return `<article class="cook-choice-card" data-selected-recipe="${escapeHTML(r.id)}"><button class="remove-choice" type="button" data-remove-selected="${escapeHTML(r.id)}">×</button><div class="thumb">${imageHTML(r.image)}</div><div class="meta"><div class="name">${escapeHTML(r.name)}</div>${flavorChip(data.selectedFlavors[r.id]||"原味","is-selected")}<select data-cook-flavor="${escapeHTML(r.id)}">${options.map(f=>`<option value="${escapeHTML(f)}" ${(data.selectedFlavors[r.id]||"原味")===f?"selected":""}>${escapeHTML(f)}</option>`).join("")}</select></div></article>`
+  }).join(""):"还没有选择菜品。请从“今天吃什么”或“菜谱图鉴”中添加。";
+}
+function renderFridge(){
+  document.getElementById("fridgeGrid").innerHTML=data.fridge.map(f=>`
+    <article class="dish">
+      <div class="thumb">${imageHTML(f.image)}</div>
+      <div class="meta"><span class="count">×${f.count}</span><div class="name">${f.name}</div><div class="stars">${stars(f.stars)}</div>${flavorChip(f.flavor||"原味")}<div class="template-action"><button class="btn" data-eat-recipe="${f.recipeId}">吃掉 1 份</button></div></div>
+    </article>`).join("")||`<div class="empty">冰箱还是空的，先做点什么吧。</div>`;
+}
+function renderPreferences(){
+  const owner=document.getElementById("preferenceOwner");
+  const current=owner.value||"self";
+  owner.innerHTML=[
+    `<option value="self">我自己</option>`,
+    ...selectedPartnerNames().map(p=>`<option value="${p}">${p}</option>`)
+  ].join("");
+  owner.value=[...owner.options].some(o=>o.value===current)?current:"self";
+
+  const labels=["不喜欢","无感","喜欢","非常喜欢"];
+  const ownerKey=owner.value;
+  document.getElementById("preferenceEditor").innerHTML=data.recipes.map(r=>{
+    const value=preferenceValue(ownerKey,r.id);
+    return `<div class="preference-row">
+      <div class="row space"><b>${r.name}</b><span class="muted">${labels[value]}</span></div>
+      <div class="preference-options">
+        ${labels.map((label,index)=>`<button class="preference-option ${index===value?"active":""}" data-pref="${r.id}" data-value="${index}">${label}</button>`).join("")}
+      </div>
+    </div>`;
+  }).join("")||`<div class="empty">请先在开发者模式添加菜谱。</div>`;
+}
+function renderLogs(){
+  const standaloneNotes=(data.diary||[]).filter(d=>!d.parentLogId);
+  const logs=[...(data.logs||[])].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const notesByParent={};
+  (data.diary||[]).filter(d=>d.parentLogId).forEach(n=>{(notesByParent[n.parentLogId]||(notesByParent[n.parentLogId]=[])).push(n)});
+  const logHTML=logs.map(l=>{
+    const notes=(notesByParent[l.id]||[]).sort((a,b)=>new Date(a.date)-new Date(b.date));
+    return `<div class="log-entry" data-log-id="${l.id}">
+      <div class="log-date">${l.date}</div>
+      <div>${decorateFlavorText(l.text)}</div>
+      ${l.image?`<img src="${l.image}" style="width:100%;max-height:220px;object-fit:cover;border-radius:14px;margin-top:10px">`:""}
+      <div class="log-actions"><button class="btn log-note-btn" data-add-note="${l.id}">添加备注</button></div>
+      <div class="inline-note-editor hidden" data-note-editor="${l.id}">
+        <label>日记内容<textarea data-note-text placeholder="在这条简报下面继续写……"></textarea></label>
+        <div class="muted" style="margin:8px 0 6px">表情</div><div class="emoji-row">${diaryEmojis.map(e=>`<button type="button" class="emoji-btn" data-inline-emoji="${e}">${e}</button>`).join("")}</div>
+        <div class="muted" style="margin:10px 0 6px">备注颜色</div><div class="note-colors">${["purple","blue","pink","red","orange"].map((c,i)=>`<button type="button" class="note-color ${i===2?"active":""}" data-color="${c}" aria-label="${c}"></button>`).join("")}</div>
+        <label style="margin-top:10px">照片<input data-note-image type="file" accept="image/*"></label>
+        <div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn" data-cancel-note>取消</button><button class="btn primary" data-save-note="${l.id}">保存备注</button></div>
+      </div>
+      ${notes.map(n=>`<div class="attached-note ${n.color||"pink"}"><div class="attached-note-time">${n.date}</div><div>${n.text||""}</div>${n.image?`<img src="${n.image}">`:""}</div>`).join("")}
+    </div>`;
+  }).join("");
+  const oldHTML=standaloneNotes.map(n=>`<div class="log-entry"><div class="log-date">${n.date}</div><div>${n.text}</div>${n.image?`<img src="${n.image}" style="width:100%;max-height:220px;object-fit:cover;border-radius:14px;margin-top:10px">`:""}</div>`).join("");
+  document.getElementById("logList").innerHTML=logHTML+oldHTML||`<div class="empty">这里会记录食材入库、制作餐品与生活中的用餐记录。</div>`;
+}
+function refreshSources(){}
+
+function openPage(pageId){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const target=document.getElementById(pageId);
+  if(!target)return;
+  target.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===pageId));
+  document.getElementById("pageTitle").textContent=pageTitle(pageId);
+  if(pageId==="inventory")renderUserTemplateControlsSafe();
+  if(pageId==="recipes"){renderRecipes();renderRecommendations()}
+  if(pageId==="seasoning")renderSeasoning();
+  if(pageId==="diary")renderLivingBriefControls();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".nav button").forEach(btn=>btn.onclick=()=>openPage(btn.dataset.page));
+document.addEventListener("click",e=>{
+  const jump=e.target.closest("[data-jump-page]");
+  if(jump)openPage(jump.dataset.jumpPage);
+});
+toggleStaminaEdit.onclick=()=>staminaEditor.classList.toggle("hidden");
+saveStamina.onclick=()=>{
+  data.stamina.current=Math.max(0,+staminaInput.value||0);data.stamina.lastUpdated=Date.now();save();
+};
+
+
+
+partnerPickerBtn.onclick=()=>partnerPickerPanel.classList.toggle("hidden");
+closePartnerPicker.onclick=()=>{
+  const checked=[...partnerCheckboxes.querySelectorAll("input:checked")].map(i=>i.value);
+  if(!checked.length)return alert("至少选择一位角色；只想记录自己时，也可以保留一位但在用餐对象中选择“我自己吃”。");
+  data.selectedPartners=data.partners.filter(p=>checked.includes(p));
+  data.currentPartner=data.selectedPartners[0];
+  partnerPickerPanel.classList.add("hidden");
+  save();
+};
+document.addEventListener("click",e=>{
+  if(!e.target.closest(".partner-picker"))partnerPickerPanel.classList.add("hidden");
+});
+
+
+userAddIngredient.onclick=()=>{
+  const template=data.ingredientTemplates.find(t=>t.id===userIngredientTemplate.value);
+  if(!template)return alert("请先选择食材");
+  const count=Math.max(1,+userIngredientCount.value||1);
+  const item={
+    id:crypto.randomUUID(),
+    templateId:template.id,
+    name:template.name,
+    category:template.category,
+    stars:+userIngredientStars.value||1,
+    count,
+    source:userIngredientSource.value,
+    note:userIngredientNote.value.trim(),
+    image:template.image||""
+  };
+  const existed=data.ingredients.find(i=>(i.templateId||i.name)===(item.templateId||item.name)&&(+i.stars||1)===(+item.stars||1));
+  if(existed){existed.count=(+existed.count||0)+item.count;existed.source=item.source;existed.note=item.note||existed.note;existed.image=item.image||existed.image;}
+  else data.ingredients.push(item);
+  addLog(`${item.source}：${item.name} ${stars(item.stars)} ×${item.count} 已入库。`,{type:"removeIngredientAmount",templateId:item.templateId,name:item.name,stars:item.stars,count:item.count});
+  userIngredientCount.value=1;
+  userIngredientNote.value="";
+  save();
+};
+
+
+[recommendationGrid,otherRecipeGrid].forEach(grid=>grid.onclick=e=>{
+  const card=e.target.closest("[data-recipe]"); if(!card)return;
+  const id=card.dataset.recipe;
+  if(data.selected.includes(id)){data.selected=data.selected.filter(x=>x!==id);delete data.selectedFlavors[id];}else{data.selected=[...data.selected,id];data.selectedFlavors[id]=data.selectedFlavors[id]||"原味";}
+  save();
+});
+recipeGrid.onclick=e=>{
+  const btn=e.target.closest("[data-library-recipe]"); if(!btn)return;
+  const id=btn.dataset.libraryRecipe;
+  if(data.selected.includes(id)){data.selected=data.selected.filter(x=>x!==id);delete data.selectedFlavors[id];}else{data.selected=[...data.selected,id];data.selectedFlavors[id]=data.selectedFlavors[id]||"原味";}
+  save();
+};
+document.getElementById("selectedDetail").onclick=e=>{const btn=e.target.closest("[data-remove-selected]");if(!btn)return;const id=btn.dataset.removeSelected;data.selected=data.selected.filter(x=>x!==id);delete data.selectedFlavors[id];save();};
+document.getElementById("selectedDetail").onchange=e=>{const select=e.target.closest("[data-cook-flavor]");if(!select)return;data.selectedFlavors[select.dataset.cookFlavor]=select.value;localStorage.setItem("warmKitchenData",JSON.stringify(data));renderRecommendations();};
+document.getElementById("cookTrayEditBtn").onclick=e=>{e.preventDefault();e.stopPropagation();const d=document.getElementById("cookTrayDetails");d.open=!d.open;e.currentTarget.textContent=d.open?"收起":"展开编辑";};
+cookSelected.onclick=()=>{
+  const selected=data.recipes.filter(r=>data.selected.includes(r.id));
+  if(!selected.length)return alert("请先选择菜品");
+  const totalCost=selected.length*data.stamina.cost;
+  const cookMode=document.querySelector('input[name="cookMode"]:checked')?.value||"self";
+  const cookLabel={self:"我自己做",together:"我们一起做",partner:"让他做"}[cookMode];
+  const undo={type:"cook",recipes:[]};
+  selected.forEach(r=>{
+    const consumed=canMake(r)?consumeRecipeIngredients(r):[];
+    const flavorSelect=document.querySelector(`[data-cook-flavor="${CSS.escape(r.id)}"]`);
+    const allowed=makeableFlavorsForRecipe(r);
+    const requested=data.selectedFlavors[r.id]||flavorSelect?.value||"原味";
+    const flavor=allowed.includes(requested)?requested:"原味";
+    const seasoningConsumed=consumeSeasoningFlavor(flavor);
+    undo.recipes.push({id:r.id,consumed,name:r.name,flavor,seasoningConsumed});
+    const resultStars=+cookResultStars.value||1;
+    const existed=data.fridge.find(f=>f.recipeId===r.id&&(+f.stars||1)===resultStars&&f.flavor===flavor);
+    if(existed)existed.count++;
+    else data.fridge.push({recipeId:r.id,name:r.name,stars:resultStars,count:1,flavor,image:r.image});
+  });
+  data.stamina.current=Math.max(0,data.stamina.current-totalCost);
+  const who=selectedPartnerNames();
+  const dishes=undo.recipes.map(x=>`${x.flavor&&x.flavor!=="原味"?x.flavor:"原味"}${x.name}`).join("、");
+  let cookText="";
+  if(cookMode==="self")cookText=`今天我做了「${dishes}」。`;
+  else if(cookMode==="together")cookText=who.length?`今天我和${who.join("、")}一起做了「${dishes}」。`:`今天我们一起做了「${dishes}」。`;
+  else cookText=who.length?`今天${who.join("、")}做了「${dishes}」。`:`今天他做了「${dishes}」。`;
+  addLog(cookText,undo);
+  data.selected=[];data.selectedFlavors={};save();
+};
+mealType.onchange=renderRecommendations;
+eaterMode.onchange=renderRecommendations;
+refreshRecommendation.onclick=renderRecommendations;
+fridgeGrid.onclick=e=>{const b=e.target.closest("[data-eat-recipe]");if(!b)return;const f=data.fridge.find(x=>x.recipeId===b.dataset.eatRecipe);if(!f)return;f.count--;addLog(`吃了 ${f.name} ×1。`,{type:"eat",recipeId:f.recipeId,item:{...f},count:1});if(f.count<=0)data.fridge=data.fridge.filter(x=>x!==f);save()};
+preferenceOwner.onchange=renderPreferences;
+preferenceEditor.onclick=e=>{
+  const btn=e.target.closest("[data-pref]");
+  if(!btn)return;
+  const owner=preferenceOwner.value;
+  const value=+btn.dataset.value;
+  if(owner==="self") data.preferences.self[btn.dataset.pref]=value;
+  else{
+    data.preferences.partners[owner]=data.preferences.partners[owner]||{};
+    data.preferences.partners[owner][btn.dataset.pref]=value;
+  }
+  localStorage.setItem("warmKitchenData",JSON.stringify(data));
+  renderPreferences();
+  renderRecommendations();
+};
+const diaryEmojis=["😊","🥰","😋","🍳","🍽️","☕","🌙","✨"];
+document.getElementById("logList").addEventListener("click",async e=>{
+  const add=e.target.closest("[data-add-note]");
+  if(add){
+    const editor=document.querySelector(`[data-note-editor="${CSS.escape(add.dataset.addNote)}"]`);
+    editor?.classList.toggle("hidden");
+    return;
+  }
+  const cancel=e.target.closest("[data-cancel-note]");
+  if(cancel){cancel.closest(".inline-note-editor")?.classList.add("hidden");return;}
+  const emoji=e.target.closest("[data-inline-emoji]");
+  if(emoji){const row=emoji.closest(".emoji-row");row.querySelectorAll(".emoji-btn").forEach(b=>b.classList.toggle("active",b===emoji));return;}
+  const color=e.target.closest(".note-color");
+  if(color){const row=color.closest(".note-colors");row.querySelectorAll(".note-color").forEach(b=>b.classList.toggle("active",b===color));return;}
+  const saveBtn=e.target.closest("[data-save-note]");
+  if(saveBtn){
+    const editor=saveBtn.closest(".inline-note-editor");
+    const text=editor.querySelector("[data-note-text]").value.trim();
+    const emojiValue=editor.querySelector("[data-inline-emoji].active")?.dataset.inlineEmoji||"";
+    const colorValue=editor.querySelector(".note-color.active")?.dataset.color||"pink";
+    const image=await readImage(editor.querySelector("[data-note-image]").files[0]);
+    if(!text&&!emojiValue&&!image)return alert("请添加文字、表情或照片中的至少一种");
+    data.diary.unshift({id:crypto.randomUUID(),parentLogId:saveBtn.dataset.saveNote,date:new Date().toLocaleString("zh-CN"),text:`${emojiValue?emojiValue+" ":""}${text||"生活照片"}`,image,color:colorValue});
+    save();
+  }
+});
+
+saveDiary.onclick=async()=>{
+  const checked=[...document.querySelectorAll('#diaryMealChecklist input[data-diary-meal]:checked')];
+  if(!checked.length)return alert("请至少选择一种这一餐吃掉的餐品");
+  const eatenBy=diaryEater.value||"我";
+  const note=diaryText.value.trim();
+  const eaten=[];
+  for(const input of checked){
+    const [recipeId,starText,flavor]=input.value.split("::");
+    const f=data.fridge.find(x=>x.recipeId===recipeId && (+x.stars||1)===+starText && (x.flavor||"原味")===flavor && x.count>0);
+    if(!f)continue;
+    const countSelect=document.querySelector(`[data-diary-count="${CSS.escape(input.value)}"]`);
+    const count=Math.min(+f.count||0,Math.max(1,+countSelect?.value||1));
+    const before={...f};
+    f.count-=count;
+    eaten.push({recipeId:f.recipeId,item:before,count,name:f.name});
+  }
+  data.fridge=data.fridge.filter(x=>(+x.count||0)>0);
+  if(!eaten.length)return alert("所选餐品已经不在冰箱里了，请重新选择");
+  const text=`${eatenBy}这一餐吃了：${eaten.map(x=>`${x.name} ×${x.count}`).join("、")}${note?`｜${note}`:""}`;
+  addLog(text,{type:"eatMultiple",items:eaten},await readImage(diaryImage.files[0]));
+  diaryText.value="";
+  diaryImage.value="";
+  save();
+};
+undoLast.onclick=()=>{
+  const log=data.logs.find(l=>l.undo);
+  if(!log)return alert("没有可以撤回的库存操作");
+  if(log.undo.type==="removeIngredient"){
+    data.ingredients=data.ingredients.filter(i=>i.id!==log.undo.id);
+  }else if(log.undo.type==="removeIngredientAmount"){
+    let remaining=log.undo.count;
+    for(const i of data.ingredients.filter(i=>(i.templateId||i.name)===(log.undo.templateId||log.undo.name)&&(+i.stars||1)===(+log.undo.stars||1))){const take=Math.min(+i.count||0,remaining);i.count-=take;remaining-=take;if(remaining<=0)break;}
+    data.ingredients=data.ingredients.filter(i=>(+i.count||0)>0);
+  }else if(log.undo.type==="eatMultiple"){
+    log.undo.items.forEach(x=>{const f=data.fridge.find(y=>y.recipeId===x.recipeId&&(+y.stars||1)===(+x.item.stars||1)&&y.flavor===x.item.flavor);if(f)f.count+=x.count;else data.fridge.push({...x.item,count:x.count});});
+  }else if(log.undo.type==="eat"){
+    const f=data.fridge.find(x=>x.recipeId===log.undo.recipeId);
+    if(f)f.count+=log.undo.count;else data.fridge.push({...log.undo.item,count:log.undo.count});
+  }else if(log.undo.type==="cook"){
+    log.undo.recipes.forEach(rr=>{
+      (rr.consumed||Object.entries(rr.ingredients||{}).map(([name,amount])=>({name,amount}))).forEach(x=>addIngredientByName(x.name,x.amount));
+      const f=data.fridge.find(x=>x.recipeId===rr.id);
+      if(f){f.count--;if(f.count<=0)data.fridge=data.fridge.filter(x=>x!==f)}
+      if(rr.seasoningConsumed){const sc=rr.seasoningConsumed;const si=(data.seasonings||[]).find(s=>s.templateId===sc.templateId);if(si)si.count=(+si.count||0)+(+sc.amount||1);}
+    });
+    data.stamina.current=Math.min(data.stamina.max,data.stamina.current+log.undo.recipes.length*data.stamina.cost);
+  }
+  data.logs=data.logs.filter(l=>l.id!==log.id);
+  save();
+};
+
+
+developerEntryBtn.onclick=()=>{
+  developerPasswordInput.value="";
+  developerLoginModal.classList.remove("hidden");
+  setTimeout(()=>developerPasswordInput.focus(),50);
+};
+cancelDeveloperLogin.onclick=()=>developerLoginModal.classList.add("hidden");
+confirmDeveloperLogin.onclick=()=>{
+  if(developerPasswordInput.value!==data.developer.password)return alert("密码不正确");
+  data.developer.authenticated=true;
+  data.mode="developer";
+  developerLoginModal.classList.add("hidden");
+  openPage("developerDashboard");
+  save();
+};
+leaveDeveloperBtn.onclick=()=>{
+  data.developer.authenticated=false;
+  data.mode="user";
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  home.classList.add("active");
+  document.querySelectorAll(".user-nav button").forEach(b=>b.classList.toggle("active",b.dataset.page==="home"));
+  document.getElementById("pageTitle").textContent="今天吃什么？";
+  save();
+};
+changePasswordBtn.onclick=()=>{
+  const oldPwd=prompt("请输入当前密码");
+  if(oldPwd!==data.developer.password)return alert("当前密码不正确");
+  const next=prompt("请输入新的开发者密码");
+  if(!next)return;
+  data.developer.password=next;
+  save();
+  alert("密码已修改");
+};
+
+devSaveIngredient.onclick=async()=>{
+  const name=devIngredientName.value.trim();if(!name)return alert("请填写食材名称");
+  if(data.ingredientTemplates.some(t=>t.name===name&&t.id!==editingIngredientId))return alert("这个食材模板已经存在");
+  const image=await readImage(devIngredientImage.files[0]);
+  if(editingIngredientId){const t=data.ingredientTemplates.find(x=>x.id===editingIngredientId);const old=t.name;Object.assign(t,{name,category:devIngredientCategory.value,image:image||t.image});data.ingredients.filter(i=>i.templateId===t.id).forEach(i=>{i.name=name;i.category=t.category;i.image=t.image});data.recipes.forEach(r=>{if(r.requiredIngredients?.[old]!==undefined){r.requiredIngredients[name]=r.requiredIngredients[old];delete r.requiredIngredients[old]}(r.alternativeGroups||[]).forEach(g=>g.options=g.options.map(x=>x===old?name:x));r.ingredients=r.requiredIngredients});resetIngredientEditor();}
+  else data.ingredientTemplates.push({id:crypto.randomUUID(),name,category:devIngredientCategory.value,image});
+  renderDeveloperPagesSafe();
+  renderRecipeTemplateSelectorsSafe();
+  renderUserTemplateControlsSafe();
+  showDeveloperStatus(`已保存食材模板：${name}。它已同步到用户模式的“食材入库”预设。`);
+  save();
+};
+cancelIngredientEdit.onclick=resetIngredientEditor;
+
+
+devSaveRecipe.onclick=async()=>{
+  const name=devRecipeName.value.trim();if(!name)return alert("请填写菜名");
+  const image=await readImage(devRecipeImage.files[0]);
+  const payload={name,category:devRecipeCategory.value,level:+devRecipeLevel.value,known:devRecipeKnown.value,flavors:devRecipeFlavors.value.split(",").map(x=>x.trim()).filter(Boolean),requiredIngredients:{...draftFixedIngredients},ingredients:{...draftFixedIngredients},alternativeGroups:structuredClone(draftAlternativeGroups)};
+  if(editingRecipeId){const r=data.recipes.find(x=>x.id===editingRecipeId);Object.assign(r,payload,{image:image||r.image});data.fridge.filter(f=>f.recipeId===r.id).forEach(f=>{f.name=r.name;f.image=r.image});resetRecipeEditor();}
+  else data.recipes.push({id:crypto.randomUUID(),...payload,image});
+  renderDeveloperPagesSafe();
+  renderRecipes();
+  renderRecommendations();
+  showDeveloperStatus(`已保存菜谱模板：${name}。它已同步到用户模式的“今日推荐”和“菜谱图鉴”。`);
+  save();
+};
+cancelRecipeEdit.onclick=resetRecipeEditor;
+addFixedIngredient.onclick=()=>{const n=fixedIngredientSelect.value;if(!n)return;draftFixedIngredients[n]=Math.max(1,+fixedIngredientAmount.value||1);syncRecipeRuleEditors()};
+addAlternativeGroup.onclick=()=>{const options=[...alternativeIngredientSelect.selectedOptions].map(o=>o.value);if(!options.length)return alert("请至少选择一种可替代食材");draftAlternativeGroups.push({label:alternativeGroupLabel.value.trim()||"任选一种",amount:Math.max(1,+alternativeGroupAmount.value||1),options});alternativeGroupLabel.value="";syncRecipeRuleEditors()};
+fixedIngredientRules.onclick=e=>{const b=e.target.closest("[data-remove-fixed]");if(b){delete draftFixedIngredients[b.dataset.removeFixed];syncRecipeRuleEditors()}};
+alternativeIngredientRules.onclick=e=>{const b=e.target.closest("[data-remove-group]");if(b){draftAlternativeGroups.splice(+b.dataset.removeGroup,1);syncRecipeRuleEditors()}};
+
+developerIngredientGrid.onclick=e=>{
+  const edit=e.target.closest("[data-edit-ingredient-template]");if(edit){const t=data.ingredientTemplates.find(x=>x.id===edit.dataset.editIngredientTemplate);editingIngredientId=t.id;devIngredientName.value=t.name;devIngredientCategory.value=t.category;devSaveIngredient.textContent="保存修改";cancelIngredientEdit.classList.remove("hidden");ingredientEditBanner.textContent=`正在编辑：${t.name}（不重新选图片则保留原图）`;ingredientEditBanner.classList.remove("hidden");scrollTo({top:0,behavior:"smooth"});return}
+  const btn=e.target.closest("[data-delete-ingredient-template]");if(!btn)return;if(!confirm("删除这个食材模板？已经录入的库存不会被删除。"))return;data.ingredientTemplates=data.ingredientTemplates.filter(t=>t.id!==btn.dataset.deleteIngredientTemplate);save();
+};
+developerRecipeGrid.onclick=e=>{
+  const edit=e.target.closest("[data-edit-recipe]");if(edit){const r=data.recipes.find(x=>x.id===edit.dataset.editRecipe);editingRecipeId=r.id;devRecipeName.value=r.name;devRecipeCategory.value=r.category;devRecipeLevel.value=r.level||1;devRecipeKnown.value=r.known||"known";devRecipeFlavors.value=(r.flavors||[]).join(",");draftFixedIngredients={...(r.requiredIngredients||r.ingredients||{})};draftAlternativeGroups=structuredClone(r.alternativeGroups||[]);devSaveRecipe.textContent="保存修改";cancelRecipeEdit.classList.remove("hidden");recipeEditBanner.textContent=`正在编辑：${r.name}（不重新选图片则保留原图）`;recipeEditBanner.classList.remove("hidden");syncRecipeRuleEditors();scrollTo({top:0,behavior:"smooth"});return}
+  const btn=e.target.closest("[data-delete-recipe]");if(!btn)return;if(!confirm("删除这个菜谱？相关喜好记录也会失去对应对象。"))return;data.recipes=data.recipes.filter(r=>r.id!==btn.dataset.deleteRecipe);save();
+};
+developerPreferenceOwner.onchange=renderDeveloperPreferences;
+developerPreferenceEditor.onclick=e=>{
+  const btn=e.target.closest("[data-dev-pref]");
+  if(!btn)return;
+  const owner=developerPreferenceOwner.value;
+  const value=+btn.dataset.value;
+  data.preferences.partners[owner]=data.preferences.partners[owner]||{};
+  data.preferences.partners[owner][btn.dataset.devPref]=value;
+  save();
+};
+
+const seasoningGridEl=document.getElementById("seasoningGrid");
+const saveAllSeasonings=document.getElementById("saveAllSeasonings");
+if(saveAllSeasonings)saveAllSeasonings.addEventListener("click",()=>{
+  const changed=[];
+  (data.seasoningTemplates||[]).forEach(template=>{
+    const input=seasoningGridEl?.querySelector(`[data-seasoning-input="${CSS.escape(template.id)}"]`);
+    if(!input)return;
+    let item=(data.seasonings||[]).find(s=>s.templateId===template.id);
+    if(!item){
+      item={id:crypto.randomUUID(),templateId:template.id,name:template.name,flavor:template.flavor,count:0,image:template.image||""};
+      data.seasonings.push(item);
+    }
+    item.count=Math.max(0,Number(input.value)||0);
+    changed.push(`${item.flavor} ${item.count}`);
+  });
+  addLog(`统一更新调料库存：${changed.join("、")}。`);
+  save();
+  alert("五种调料数量已统一保存");
+});
+
+
+// V31 unified draggable floating menu
+(function setupUnifiedDraggableCookTray(){
+  const tray=document.getElementById('floatingCookTray');
+  const handle=document.getElementById('cookDragHandle');
+  const details=document.getElementById('cookTrayDetails');
+  if(!tray||!handle||!details)return;
+
+  const storageKey='deepspaceKitchenCookTrayAnchorV31';
+  const oldStorageKey='deepspaceKitchenCookTrayPositionV23';
+  const margin=8;
+  let dragging=false;
+  let startX=0,startY=0,startLeft=0,startTop=0;
+  let anchor=null; // {centerX, top}
+
+  function readAnchor(){
+    try{
+      const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
+      if(saved&&Number.isFinite(saved.centerX)&&Number.isFinite(saved.top))return saved;
+      const old=JSON.parse(localStorage.getItem(oldStorageKey)||'null');
+      if(old&&Number.isFinite(old.left)&&Number.isFinite(old.top)){
+        const compactWidth=Math.min(620,Math.max(240,window.innerWidth-32));
+        return {centerX:old.left+compactWidth/2,top:old.top};
+      }
+    }catch(_){ }
+    return null;
+  }
+  function saveAnchor(value){
+    anchor=value;
+    localStorage.setItem(storageKey,JSON.stringify(value));
+  }
+  function clampLeftTop(left,top){
+    const width=tray.offsetWidth||1;
+    const height=tray.offsetHeight||1;
+    const maxLeft=Math.max(margin,window.innerWidth-width-margin);
+    const maxTop=Math.max(margin,window.innerHeight-height-margin);
+    return {
+      left:Math.min(Math.max(margin,left),maxLeft),
+      top:Math.min(Math.max(margin,top),maxTop)
+    };
+  }
+  function setPosition(left,top,persist=false){
+    const pos=clampLeftTop(left,top);
+    tray.classList.add('is-positioned');
+    tray.style.setProperty('--tray-left',pos.left+'px');
+    tray.style.setProperty('--tray-top',pos.top+'px');
+    tray.style.left=pos.left+'px';
+    tray.style.top=pos.top+'px';
+    tray.style.right='auto';
+    tray.style.bottom='auto';
+    tray.style.transform='none';
+    if(persist)saveAnchor({centerX:pos.left+tray.offsetWidth/2,top:pos.top});
+    return pos;
+  }
+  function positionFromAnchor(value,persist=false){
+    requestAnimationFrame(()=>{
+      const a=value||anchor||{centerX:window.innerWidth/2,top:Math.max(margin,window.innerHeight-tray.offsetHeight-12)};
+      const pos=setPosition(a.centerX-tray.offsetWidth/2,a.top,false);
+      anchor={centerX:pos.left+tray.offsetWidth/2,top:pos.top};
+      if(persist)saveAnchor(anchor);
+    });
+  }
+
+  anchor=readAnchor();
+  requestAnimationFrame(()=>{
+    if(!anchor){
+      const rect=tray.getBoundingClientRect();
+      anchor={centerX:rect.left+rect.width/2,top:rect.top};
+    }
+    positionFromAnchor(anchor,false);
+  });
+
+  const summary=tray.querySelector('summary');
+  summary?.addEventListener('click',e=>{
+    if(e.target.closest?.('#cookDragHandle')){
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  },true);
+  ['click','dblclick'].forEach(type=>handle.addEventListener(type,e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  }));
+
+  handle.addEventListener('pointerdown',e=>{
+    if(e.button!==undefined&&e.button!==0)return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    const rect=tray.getBoundingClientRect();
+    dragging=true;
+    startX=e.clientX;startY=e.clientY;
+    startLeft=rect.left;startTop=rect.top;
+    tray.classList.add('dragging','is-positioned');
+    setPosition(rect.left,rect.top,false);
+    handle.setPointerCapture?.(e.pointerId);
+  });
+  handle.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    e.preventDefault();
+    setPosition(startLeft+(e.clientX-startX),startTop+(e.clientY-startY),false);
+  });
+  function finish(e){
+    if(!dragging)return;
+    dragging=false;
+    tray.classList.remove('dragging');
+    const rect=tray.getBoundingClientRect();
+    saveAnchor({centerX:rect.left+rect.width/2,top:rect.top});
+    try{handle.releasePointerCapture?.(e.pointerId)}catch(_){ }
+  }
+  handle.addEventListener('pointerup',finish);
+  handle.addEventListener('pointercancel',finish);
+
+  // Width/height changes when opening or closing; retain the same visual anchor.
+  details.addEventListener('toggle',()=>positionFromAnchor(anchor,true));
+  window.addEventListener('resize',()=>positionFromAnchor(anchor,true));
+})();
+
+
+setInterval(()=>{renderAll()},60000);
+renderAll();
+</script>
+</body>
+</html>
